@@ -102,7 +102,7 @@ function addCartridgeRow() {
   var CartridgesContainer = document.querySelector(".cartridges-container");
 
   const cartridgeRows = document.querySelectorAll(".cartridge-row");
-  if (cartridgeRows.length === 1) return;
+  if (cartridgeRows.length === 2) return;
 
   var cartridgeRow = document.createElement("div");
   cartridgeRow.className = "cartridge-row item-row";

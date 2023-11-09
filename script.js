@@ -229,8 +229,8 @@ function createMessage(data) {
 
   console.log(fullMessage);
 
-  // const message = encodeURIComponent(fullMessage);
-  // window.open(`whatsapp://send?text=${message}`);
+  const message = encodeURIComponent(fullMessage);
+  window.open(`whatsapp://send?text=${message}`);
 }
 
 function copyToClipboard(fullMessage) {

@@ -3,27 +3,6 @@ const addEwButton = document.querySelector("#ew_btn");
 const addCartridgeButton = document.querySelector("#cartridge_btn");
 const saveButton = document.querySelector("#save_btn");
 
-const missileTypes = [
-  "קרדום K",
-  "קרדום R0",
-  "קרדום R9",
-  'תמוז 2 נ"א',
-  'תמוז 2 נ"ט',
-  'פתיל 2 נ"א',
-  'פתיל 2 נ"ט',
-  'טיל GATR'
-];
-
-const ewTypes = ["802", "206", "RR-180", "RR-170"];
-const ewPoints = [
-  "כ.י חיצוני",
-  "כ.י פנימי",
-  "גב צד ימין",
-  "גב צד שמאל",
-  "כ.ש פנימי",
-  "כ.ש חיצוני",
-];
-
 addMissileButton.addEventListener("click", () => addMissileRow());
 
 addEwButton.addEventListener("click", () => addEwRow());
@@ -58,8 +37,20 @@ function addMissileRow() {
   inputElement.className = "form-control";
   inputElement.id = "missile_number";
 
+  var resultSelectElement = document.createElement("select");
+  resultSelectElement.id = "missile_result";
+  resultSelectElement.className = "form-select";
+
+  for (let option of resultOptions) {
+    var optionElement = document.createElement("option");
+    optionElement.text = option;
+    optionElement.value = option;
+    resultSelectElement.appendChild(optionElement);
+  }
+
   missileRow.appendChild(selectElement);
   missileRow.appendChild(inputElement);
+  missileRow.appendChild(resultSelectElement);
 
   missilesContainer.appendChild(missileRow);
 }
@@ -116,13 +107,26 @@ function addCartridgeRow() {
   var cartridgeRow = document.createElement("div");
   cartridgeRow.className = "cartridge-row item-row";
 
+  var typeSelectElement = document.createElement("select");
+  typeSelectElement.id = "cartridge_type_select";
+  typeSelectElement.className = "form-select";
+  for (let type of ["אימונים", "מבצעי"]) {
+    var optionElement = document.createElement("option");
+    optionElement.selected = true;
+    optionElement.text = type;
+    optionElement.value = type;
+    typeSelectElement.appendChild(optionElement);
+  }
+
   var inputElement = document.createElement("input");
   inputElement.type = "number";
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות פגזים";
   inputElement.id = "cartridge_input";
 
+  cartridgeRow.appendChild(typeSelectElement);
   cartridgeRow.appendChild(inputElement);
+
   CartridgesContainer.appendChild(cartridgeRow);
 }
 
@@ -150,9 +154,11 @@ function saveMissiles() {
   for (let missileRow of missilesRows) {
     const missileType = missileRow.querySelector("#missile-select").value;
     const missileNumber = missileRow.querySelector("#missile_number").value;
+    const missileResult = missileRow.querySelector("#missile_result").value;
     missileList.push({
       Type: missileType,
       SerialNumber: missileNumber,
+      Result: missileResult,
     });
   }
   return missileList;
@@ -176,32 +182,38 @@ function saveEw() {
 }
 
 function saveCartridge() {
-  const cartridgeRows = document.querySelectorAll(".cartridge-row");
-  if (cartridgeRows.length === 0) return null;
+  const cartridgeRows = document.querySelector(".cartridge-row");
+  if (!cartridgeRows) return null;
 
+  const cartridgeType = document.querySelector("#cartridge_type_select").value;
   const cartridgeQuantity = document.querySelector("#cartridge_input").value;
-  return cartridgeQuantity;
+  return {
+    Type: cartridgeType,
+    Quantity: cartridgeQuantity,
+  };
 }
 
 function createMessage(data) {
-  const missiles = data["missiles"];
-  const ews = data["ews"];
-  const cartridges = data["cartridges"];
-  const heliNumber = data["heliNumber"];
+  const missiles = data.missiles;
+  const ews = data.ews;
+  const cartridges = data.cartridges;
+  const heliNumber = data.heliNumber;
 
   const heliNumberMessagePart = `מסוק ${heliNumber}`;
   let ewsMessagePart = ``;
   for (let ew of ews) {
-    ewsMessagePart += `${ew["Type"]} ${ew["Point"]} - ${ew["Quantity"]}\n`;
+    ewsMessagePart += `${ew.Type} ${ew.Point} - ${ew.Quantity}\n`;
   }
 
   let missilesMessagePart = ``;
   for (let missile of missiles) {
-    missilesMessagePart += `${missile["Type"]} מסד ${missile["SerialNumber"]}\n`;
+    missilesMessagePart += `טיל ${missile.Type} מסד ${missile.SerialNumber} - ${missile.Result}`;
   }
 
-  let cartridgeMessagePart =
-    cartridges != null || cartridges != `` ? `פגזים - ${cartridges}` : ``;
+  let cartridgeMessagePart = ``;
+  if (cartridges !== null) {
+    cartridgeMessagePart += `פגזים ${cartridges.Type}: ${cartridges.Quantity}`;
+  }
 
   const fullMessage = `
   🐝  ${heliNumberMessagePart}  🐝
@@ -209,6 +221,8 @@ function createMessage(data) {
   ${ewsMessagePart}
   ${missilesMessagePart}
   ${cartridgeMessagePart}`;
+
+  console.log(fullMessage);
 
   const message = encodeURIComponent(fullMessage);
   window.open(`whatsapp://send?text=${message}`);

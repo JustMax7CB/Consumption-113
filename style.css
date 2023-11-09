@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 80%;
+    width: 100%;
 }
 
 body {
@@ -27,6 +27,10 @@ h1 {
 #add_missile_btn {
     width: 10em;
     margin: 10px 0;
+}
+
+.missile_number {
+    width: 80px;
 }
 
 input,

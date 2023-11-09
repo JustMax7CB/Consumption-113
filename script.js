@@ -182,15 +182,20 @@ function saveEw() {
 }
 
 function saveCartridge() {
-  const cartridgeRows = document.querySelector(".cartridge-row");
-  if (!cartridgeRows) return null;
+  let cartridgeList = [];
 
-  const cartridgeType = document.querySelector("#cartridge_type_select").value;
-  const cartridgeQuantity = document.querySelector("#cartridge_input").value;
-  return {
-    Type: cartridgeType,
-    Quantity: cartridgeQuantity,
-  };
+  const cartridgeRows = document.querySelectorAll(".cartridge-row");
+  if (cartridgeRows.length === 0) return [];
+
+  for (let row of cartridgeRows) {
+    const type = row.querySelector("#cartridge_type_select").value;
+    const quantity = row.querySelector("#cartridge_input").value;
+    cartridgeList.push({
+      Type: type,
+      Quantity: quantity,
+    });
+  }
+  return cartridgeList;
 }
 
 function createMessage(data) {
@@ -207,12 +212,12 @@ function createMessage(data) {
 
   let missilesMessagePart = ``;
   for (let missile of missiles) {
-    missilesMessagePart += `טיל ${missile.Type} מסד ${missile.SerialNumber} - ${missile.Result}`;
+    missilesMessagePart += `טיל ${missile.Type} מסד ${missile.SerialNumber} - ${missile.Result}\n`;
   }
 
   let cartridgeMessagePart = ``;
-  if (cartridges !== null) {
-    cartridgeMessagePart += `פגזים ${cartridges.Type}: ${cartridges.Quantity}`;
+  for (let cartridge of cartridges) {
+    cartridgeMessagePart += `פגזים ${cartridge.Type} - ${cartridge.Quantity}\n`;
   }
 
   const fullMessage = `
@@ -224,8 +229,8 @@ function createMessage(data) {
 
   console.log(fullMessage);
 
-  const message = encodeURIComponent(fullMessage);
-  window.open(`whatsapp://send?text=${message}`);
+  // const message = encodeURIComponent(fullMessage);
+  // window.open(`whatsapp://send?text=${message}`);
 }
 
 function copyToClipboard(fullMessage) {

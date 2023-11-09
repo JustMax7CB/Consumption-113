@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    margin: 20px 5px 40px 5px;
+}
+
+.item-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+#add_missile_btn {
+    width: 10em;
+    margin: 10px 0;
+}
+
+input,
+select {
+    margin: 2px;
+    height: 40px;
+}
+
+#save_btn {
+    margin: 50px 5px 5px 5px;
+    width: 10em;
+    height: 3em;
+    font-size: 20px;
+}
+
+.btn-primary,
+.form-select {
+    font-size: 14px;
+    width: 8em;
+    margin: 10px 5px;
+}
+
+.ew-row {
+    width: 70%;
+}
+
+#ew-quantity-input, #cartridge_input {
+    width: 90px;
+}

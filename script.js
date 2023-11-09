@@ -3,6 +3,10 @@ const addEwButton = document.querySelector("#ew_btn");
 const addCartridgeButton = document.querySelector("#cartridge_btn");
 const saveButton = document.querySelector("#save_btn");
 
+let missileIndex = 0;
+let ewIndex = 0;
+let cartridgeIndex = 0;
+
 addMissileButton.addEventListener("click", () => addMissileRow());
 
 addEwButton.addEventListener("click", () => addEwRow());
@@ -17,8 +21,11 @@ function addMissileRow() {
   const missileRows = document.querySelectorAll(".missile-row");
   if (missileRows.length === 7) return;
 
+  const currentIndex = missileIndex++;
+
   var missileRow = document.createElement("div");
-  missileRow.className = "missile-row item-row";
+  missileRow.className = `missile-row item-row`;
+  missileRow.setAttribute("index", `${currentIndex}`);
 
   var selectElement = document.createElement("select");
   selectElement.id = "missile-select";
@@ -48,11 +55,21 @@ function addMissileRow() {
     resultSelectElement.appendChild(optionElement);
   }
 
+  var removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.innerText = "מחק";
+  removeButton.className = "btn btn-danger";
+  removeButton.onclick = () => removeElement("missile-row", currentIndex);
+
+  console.log(removeButton);
+
   missileRow.appendChild(selectElement);
   missileRow.appendChild(inputElement);
   missileRow.appendChild(resultSelectElement);
+  missileRow.appendChild(removeButton);
 
   missilesContainer.appendChild(missileRow);
+
 }
 
 function addEwRow() {
@@ -61,8 +78,11 @@ function addEwRow() {
   const ewRows = document.querySelectorAll(".ew-row");
   if (ewRows.length === 6) return;
 
+  const currentIndex = ewIndex++;
+
   var ewRow = document.createElement("div");
   ewRow.className = "ew-row item-row";
+  ewRow.setAttribute("index", currentIndex);
 
   var typeSelectElement = document.createElement("select");
   typeSelectElement.id = "ew-type-select";
@@ -91,9 +111,17 @@ function addEwRow() {
   inputElement.placeholder = "כמות";
   inputElement.id = "ew-quantity-input";
 
+  var removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.innerText = "מחק";
+  removeButton.className = "btn btn-danger";
+  removeButton.onclick = () => removeElement("ew-row", currentIndex);
+
+
   ewRow.appendChild(typeSelectElement);
   ewRow.appendChild(pointSelectElement);
   ewRow.appendChild(inputElement);
+  ewRow.appendChild(removeButton);
 
   EwContainer.appendChild(ewRow);
 }
@@ -104,8 +132,11 @@ function addCartridgeRow() {
   const cartridgeRows = document.querySelectorAll(".cartridge-row");
   if (cartridgeRows.length === 2) return;
 
+  const currentIndex = cartridgeIndex++;
+
   var cartridgeRow = document.createElement("div");
   cartridgeRow.className = "cartridge-row item-row";
+  cartridgeRow.setAttribute("index", currentIndex);
 
   var typeSelectElement = document.createElement("select");
   typeSelectElement.id = "cartridge_type_select";
@@ -124,8 +155,16 @@ function addCartridgeRow() {
   inputElement.placeholder = "כמות פגזים";
   inputElement.id = "cartridge_input";
 
+  var removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.innerText = "מחק";
+  removeButton.className = "btn btn-danger";
+  removeButton.onclick = () => removeElement("cartridge-row", currentIndex);
+
+
   cartridgeRow.appendChild(typeSelectElement);
   cartridgeRow.appendChild(inputElement);
+  cartridgeRow.appendChild(removeButton);
 
   CartridgesContainer.appendChild(cartridgeRow);
 }
@@ -255,4 +294,16 @@ function copyToClipboard(fullMessage) {
   document.body.removeChild(textarea);
 
   alert("Message copied to clipboard");
+}
+
+function removeElement(className, index) {
+  const query = `.${className}[index="${index}"]`;
+  console.log(query);
+  const element = document.querySelector(query);
+
+  if (element) {
+    element.remove();
+  } else {
+    console.error("Element not found");
+  }
 }

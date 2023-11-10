@@ -41,6 +41,11 @@ h1 {
 #flight_time {
     text-align: center;
     width: 100px;
+    font-size: 20px;
+}
+
+#flight_time::placeholder {
+    font-size: 13px;
 }
 
 #pilot_name {

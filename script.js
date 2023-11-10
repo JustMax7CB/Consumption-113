@@ -1,31 +1,8 @@
-const addMissileButton = document.querySelector("#add_missile_btn");
-const addEwButton = document.querySelector("#ew_btn");
-const addCartridgeButton = document.querySelector("#cartridge_btn");
-const notesTextArea = document.querySelector("#notes");
-const clearButton = document.querySelector("#clear_btn");
-
-const whatsappShareContainer = document.querySelector("#whatsapp-container");
-const telegramShareContainer = document.querySelector("#telegram-container");
-
 let missileIndex = 0;
 let ewIndex = 0;
 let cartridgeIndex = 0;
 
-addMissileButton.addEventListener("click", () => addMissileRow());
 
-addEwButton.addEventListener("click", () => addEwRow());
-
-addCartridgeButton.addEventListener("click", () => addCartridgeRow());
-
-whatsappShareContainer.addEventListener("click", () =>
-  saveData(sendToWhatsapp)
-);
-
-telegramShareContainer.addEventListener("click", () =>
-  saveData(sendToTelegram)
-);
-
-clearButton.addEventListener("click", () => clearData());
 
 function addMissileRow() {
   const missilesContainer = document.querySelector(".missile-container");
@@ -361,12 +338,10 @@ function removeElement(className, index) {
 }
 
 function clearData() {
-  const inputElements = document.querySelectorAll("input");
-  for (let input of inputElements) {
-    input.value = null;
+  const elements = document.querySelectorAll("input, textarea");
+  for (let element of elements) {
+    element.value = null;
   }
-
-  document.querySelector("textarea").value = null;
 
   const rows = document.querySelectorAll(".item-row");
   for (let row of rows) {

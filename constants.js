@@ -16,6 +16,7 @@ const missileTypes = [
 ];
 
 const ewTypes = ["802", "206", "RR-180", "RR-170"];
+
 const ewPoints = [
   "כ.י חיצוני",
   "כ.י פנימי",

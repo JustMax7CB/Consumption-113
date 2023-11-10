@@ -11,10 +11,15 @@
 </head>
 
 <body dir="rtl">
-    <h1>🐝 דיווח צריכות 🐝</h1>
+    <h1>🐝 דיווחי הצרעה 🐝</h1>
 
     <div class="heli-container container input-group mb-3">
         <input id="heli_number" type="number" inputmode="numeric" placeholder="מספר מסוק">
+    </div>
+
+    <div class="flight-details">
+        <input id="pilot_name" type="text" placeholder="שם טייס" />
+        <input id="flight_time" type="time" placeholder="שעות טיסה" />
     </div>
 
     <h4>טילים</h4>
@@ -38,14 +43,14 @@
 
     <div class="share-container">
         <div id="whatsapp-container" class="border rounded">
-            <img name="whatsapp_share" src="assets/whatsapp-logo.png" id="whatsapp_btn" alt="whatsapp-logo" width="65"
+            <img id="whatsapp_share" src="assets/whatsapp-logo.png" id="whatsapp_btn" alt="whatsapp-logo" width="65"
                 height="65">
-            <label for="whatsapp_share">שיתוף ל Whatsapp</label>
+            <label>שיתוף ל Whatsapp</label>
         </div>
         <div id="telegram-container" class="border rounded">
-            <img name="telegram-share" src="assets/telegram-logo.png" id="telegram_btn" alt="telegram-logo" width="65"
+            <img id="telegram-share" src="assets/telegram-logo.png" id="telegram_btn" alt="telegram-logo" width="65"
                 height="65">
-            <label for="telegram_share">שיתוף ל Telegram</label>
+            <label>שיתוף ל Telegram</label>
         </div>
     </div>
 

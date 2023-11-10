@@ -30,10 +30,37 @@ h1 {
     color: #999;
 }
 
+.flight-details {
+    display: flex;
+    margin: 0 0 2em 0;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+#flight_time {
+    text-align: center;
+    width: 100px;
+}
+
+#pilot_name {
+    text-align: center;
+    width: 160px;
+    font-size: 20px;
+}
+
+#pilot_name::placeholder {
+    font-size: 13px;
+    text-align: center;
+    color: #999;
+
+}
+
 /* Firefox */
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -117,5 +144,5 @@ textarea {
 }
 
 #clear_btn {
-    margin: 20px; 
+    margin: 20px;
 }

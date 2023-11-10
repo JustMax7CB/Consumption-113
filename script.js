@@ -179,6 +179,7 @@ function addCartridgeRow() {
 }
 
 function saveData(sendFunction) {
+  const flightDetails = saveFlightDetails();
   const heliNumber = document.querySelector("#heli_number").value;
   const missiles = saveMissiles();
   const ews = saveEw();
@@ -186,6 +187,7 @@ function saveData(sendFunction) {
   const note = saveNotes();
 
   const data = {
+    flightDetails: flightDetails,
     heliNumber: heliNumber,
     missiles: missiles,
     ews: ews,
@@ -194,7 +196,20 @@ function saveData(sendFunction) {
   };
 
   const fullMessage = createMessage(data);
+
   sendFunction(fullMessage);
+}
+
+function saveFlightDetails() {
+  const pilotName = document.querySelector("#pilot_name").value;
+  const flightTime = document.querySelector("#flight_time").value;
+  console.log(pilotName);
+  console.log(flightTime);
+  if (pilotName === "" || flightTime === "") return null;
+  return {
+    Pilot: pilotName,
+    Time: flightTime,
+  };
 }
 
 function saveMissiles() {
@@ -254,11 +269,17 @@ function saveNotes() {
 }
 
 function createMessage(data) {
+  const flightDetails = data.flightDetails;
   const missiles = data.missiles;
   const ews = data.ews;
   const cartridges = data.cartridges;
   const heliNumber = data.heliNumber;
   const note = data.note;
+
+  let flightDetailsMessagePart = ``;
+  if (flightDetails !== null) {
+    flightDetailsMessagePart = `שם טייס: ${flightDetails.Pilot} , זמן טיסה: ${flightDetails.Time}`;
+  }
 
   const heliNumberMessagePart = `מסוק ${heliNumber}`;
   let ewsMessagePart = ``;
@@ -276,18 +297,16 @@ function createMessage(data) {
     cartridgeMessagePart += `פגזים ${cartridge.Type} - ${cartridge.Quantity}\n`;
   }
 
-  let noteMessagePart = ``;
-  if (note !== null) {
-    noteMessagePart += `${note}`;
-  }
+  let noteMessagePart = note !== null ? note : null;
 
-  const fullMessage = `
-  🐝  ${heliNumberMessagePart}  🐝
+  const fullMessage = `🐝  ${heliNumberMessagePart}  🐝
+${flightDetailsMessagePart}
 
-  ${ewsMessagePart}
-  ${missilesMessagePart}
-  ${cartridgeMessagePart}
-  ${noteMessagePart}`;
+${ewsMessagePart}
+${missilesMessagePart}
+${cartridgeMessagePart}
+
+${noteMessagePart}`;
 
   console.log(fullMessage);
 
@@ -347,8 +366,7 @@ function clearData() {
   }
 
   document.querySelector("textarea").value = null;
-  
-  
+
   const rows = document.querySelectorAll(".item-row");
   for (let row of rows) {
     row.remove();

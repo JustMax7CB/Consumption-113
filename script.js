@@ -1,7 +1,11 @@
 const addMissileButton = document.querySelector("#add_missile_btn");
 const addEwButton = document.querySelector("#ew_btn");
 const addCartridgeButton = document.querySelector("#cartridge_btn");
-const saveButton = document.querySelector("#save_btn");
+const notesTextArea = document.querySelector("#notes");
+const clearButton = document.querySelector("#clear_btn");
+
+const whatsappShareContainer = document.querySelector("#whatsapp-container");
+const telegramShareContainer = document.querySelector("#telegram-container");
 
 let missileIndex = 0;
 let ewIndex = 0;
@@ -13,7 +17,15 @@ addEwButton.addEventListener("click", () => addEwRow());
 
 addCartridgeButton.addEventListener("click", () => addCartridgeRow());
 
-saveButton.addEventListener("click", () => saveData());
+whatsappShareContainer.addEventListener("click", () =>
+  saveData(sendToWhatsapp)
+);
+
+telegramShareContainer.addEventListener("click", () =>
+  saveData(sendToTelegram)
+);
+
+clearButton.addEventListener("click", () => clearData());
 
 function addMissileRow() {
   const missilesContainer = document.querySelector(".missile-container");
@@ -69,7 +81,6 @@ function addMissileRow() {
   missileRow.appendChild(removeButton);
 
   missilesContainer.appendChild(missileRow);
-
 }
 
 function addEwRow() {
@@ -117,7 +128,6 @@ function addEwRow() {
   removeButton.className = "btn btn-danger";
   removeButton.onclick = () => removeElement("ew-row", currentIndex);
 
-
   ewRow.appendChild(typeSelectElement);
   ewRow.appendChild(pointSelectElement);
   ewRow.appendChild(inputElement);
@@ -161,7 +171,6 @@ function addCartridgeRow() {
   removeButton.className = "btn btn-danger";
   removeButton.onclick = () => removeElement("cartridge-row", currentIndex);
 
-
   cartridgeRow.appendChild(typeSelectElement);
   cartridgeRow.appendChild(inputElement);
   cartridgeRow.appendChild(removeButton);
@@ -169,21 +178,23 @@ function addCartridgeRow() {
   CartridgesContainer.appendChild(cartridgeRow);
 }
 
-function saveData() {
+function saveData(sendFunction) {
   const heliNumber = document.querySelector("#heli_number").value;
   const missiles = saveMissiles();
   const ews = saveEw();
   const cartridgeQuantity = saveCartridge();
+  const note = saveNotes();
 
   const data = {
     heliNumber: heliNumber,
     missiles: missiles,
     ews: ews,
     cartridges: cartridgeQuantity,
+    note: note,
   };
 
-  const sendToWhatsapp = confirm("Share message to whatsapp?");
-  if (sendToWhatsapp) createMessage(data);
+  const fullMessage = createMessage(data);
+  sendFunction(fullMessage);
 }
 
 function saveMissiles() {
@@ -237,11 +248,17 @@ function saveCartridge() {
   return cartridgeList;
 }
 
+function saveNotes() {
+  const note = document.querySelector("textarea").value;
+  return note === "" ? null : note;
+}
+
 function createMessage(data) {
   const missiles = data.missiles;
   const ews = data.ews;
   const cartridges = data.cartridges;
   const heliNumber = data.heliNumber;
+  const note = data.note;
 
   const heliNumberMessagePart = `מסוק ${heliNumber}`;
   let ewsMessagePart = ``;
@@ -259,17 +276,32 @@ function createMessage(data) {
     cartridgeMessagePart += `פגזים ${cartridge.Type} - ${cartridge.Quantity}\n`;
   }
 
+  let noteMessagePart = ``;
+  if (note !== null) {
+    noteMessagePart += `${note}`;
+  }
+
   const fullMessage = `
   🐝  ${heliNumberMessagePart}  🐝
 
   ${ewsMessagePart}
   ${missilesMessagePart}
-  ${cartridgeMessagePart}`;
+  ${cartridgeMessagePart}
+  ${noteMessagePart}`;
 
   console.log(fullMessage);
 
+  return fullMessage;
+}
+
+function sendToWhatsapp(fullMessage) {
   const message = encodeURIComponent(fullMessage);
   window.open(`whatsapp://send?text=${message}`);
+}
+
+function sendToTelegram(fullMessage) {
+  const message = encodeURIComponent(fullMessage);
+  window.open(`tg://msg?text=${message}`);
 }
 
 function copyToClipboard(fullMessage) {
@@ -305,5 +337,20 @@ function removeElement(className, index) {
     element.remove();
   } else {
     console.error("Element not found");
+  }
+}
+
+function clearData() {
+  const inputElements = document.querySelectorAll("input");
+  for (let input of inputElements) {
+    input.value = null;
+  }
+
+  document.querySelector("textarea").value = null;
+  
+  
+  const rows = document.querySelectorAll(".item-row");
+  for (let row of rows) {
+    row.remove();
   }
 }

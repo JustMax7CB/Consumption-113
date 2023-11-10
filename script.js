@@ -8,6 +8,8 @@ const whatsappShareContainer = document.querySelector("#whatsapp-container");
 const telegramShareContainer = document.querySelector("#telegram-container");
 const flightTimeInput = document.querySelector("#flight_time");
 
+const normalBorderStyle = flightTimeInput.style.border;
+
 function formatTime(value) {
   if (value.length > 2) {
     return value.slice(0, -2) + ":" + value.slice(-2);
@@ -19,6 +21,7 @@ flightTimeInput.addEventListener("input", () => {
   if (flightTimeInput.value.length > flightTimeInput.maxlength) {
     flightTimeInput.blur();
   }
+
   flightTimeInput.value = flightTimeInput.value.replace(/\D/g, ""); // Remove non-numeric characters
   let formattedValue = formatTime(flightTimeInput.value);
   flightTimeInput.value = formattedValue;
@@ -44,7 +47,7 @@ let missileIndex = 0;
 let ewIndex = 0;
 let cartridgeIndex = 0;
 
-function addMissileRow() {
+const addMissileRow = () => {
   const missilesContainer = document.querySelector(".missile-container");
 
   const missileRows = document.querySelectorAll(".missile-row");
@@ -98,9 +101,9 @@ function addMissileRow() {
   missileRow.appendChild(removeButton);
 
   missilesContainer.appendChild(missileRow);
-}
+};
 
-function addEwRow() {
+const addEwRow = () => {
   const EwContainer = document.querySelector(".ew-container");
 
   const ewRows = document.querySelectorAll(".ew-row");
@@ -151,9 +154,9 @@ function addEwRow() {
   ewRow.appendChild(removeButton);
 
   EwContainer.appendChild(ewRow);
-}
+};
 
-function addCartridgeRow() {
+const addCartridgeRow = () => {
   var CartridgesContainer = document.querySelector(".cartridges-container");
 
   const cartridgeRows = document.querySelectorAll(".cartridge-row");
@@ -193,43 +196,60 @@ function addCartridgeRow() {
   cartridgeRow.appendChild(removeButton);
 
   CartridgesContainer.appendChild(cartridgeRow);
-}
+};
 
-function saveData(sendFunction) {
+const checkTime = (flightDetails) => {
+  const flightTime = flightDetails.Time;
+  const flightHour = flightTime.split(":")[0];
+  const flightMinute = flightTime.split(":")[1];
+  const hourValid = Number(flightHour) >= 0 && Number(flightHour) < 24;
+  const minuteValid = Number(flightMinute) >= 0 && Number(flightMinute) < 60;
+  return hourValid && minuteValid;
+};
+
+const saveData = (sendFunction) => {
   const flightDetails = saveFlightDetails();
-  const heliNumber = document.querySelector("#heli_number").value;
-  const missiles = saveMissiles();
-  const ews = saveEw();
-  const cartridgeQuantity = saveCartridge();
-  const note = saveNotes();
+  const timeValid = checkTime(flightDetails);
+  if (!timeValid) {
+    flightTimeInput.style.border = "2px solid red";
+    alert("זמן טיסה לא חוקי");
+  } else {
+    flightTimeInput.style.border = normalBorderStyle;
 
-  const data = {
-    flightDetails: flightDetails,
-    heliNumber: heliNumber,
-    missiles: missiles,
-    ews: ews,
-    cartridges: cartridgeQuantity,
-    note: note,
-  };
+    const heliNumber = document.querySelector("#heli_number").value;
+    const missiles = saveMissiles();
+    const ews = saveEw();
+    const cartridgeQuantity = saveCartridge();
+    const note = saveNotes();
 
-  const fullMessage = createMessage(data);
+    const data = {
+      flightDetails: flightDetails,
+      heliNumber: heliNumber,
+      missiles: missiles,
+      ews: ews,
+      cartridges: cartridgeQuantity,
+      note: note,
+    };
 
-  sendFunction(fullMessage);
-}
+    const fullMessage = createMessage(data);
 
-function saveFlightDetails() {
+    sendFunction(fullMessage);
+  }
+};
+
+const saveFlightDetails = () => {
   const pilotName = document.querySelector("#pilot_name").value;
   const flightTime = document.querySelector("#flight_time").value;
   console.log(pilotName);
   console.log(flightTime);
-  if (pilotName === "" || flightTime === "") return null;
+  if (pilotName === "" && flightTime === "") return null;
   return {
     Pilot: pilotName,
     Time: flightTime,
   };
-}
+};
 
-function saveMissiles() {
+const saveMissiles = () => {
   let missileList = [];
 
   const missilesRows = document.querySelectorAll(".missile-row");
@@ -244,9 +264,9 @@ function saveMissiles() {
     });
   }
   return missileList;
-}
+};
 
-function saveEw() {
+const saveEw = () => {
   let ewList = [];
 
   const ewRows = document.querySelectorAll(".ew-row");
@@ -261,9 +281,9 @@ function saveEw() {
     });
   }
   return ewList;
-}
+};
 
-function saveCartridge() {
+const saveCartridge = () => {
   let cartridgeList = [];
 
   const cartridgeRows = document.querySelectorAll(".cartridge-row");
@@ -278,15 +298,15 @@ function saveCartridge() {
     });
   }
   return cartridgeList;
-}
+};
 
-function saveNotes() {
+const saveNotes = () => {
   const note = document.querySelector("textarea").value;
   if (note !== undefined && note !== null) return note;
   return "";
-}
+};
 
-function createMessage(data) {
+const createMessage = (data) => {
   const flightDetails = data.flightDetails;
   const missiles = data.missiles;
   const ews = data.ews;
@@ -329,19 +349,19 @@ ${noteMessagePart}`;
   console.log(fullMessage);
 
   return fullMessage;
-}
+};
 
-function sendToWhatsapp(fullMessage) {
+const sendToWhatsapp = (fullMessage) => {
   const message = encodeURIComponent(fullMessage);
   window.open(`whatsapp://send?text=${message}`);
-}
+};
 
-function sendToTelegram(fullMessage) {
+const sendToTelegram = (fullMessage) => {
   const message = encodeURIComponent(fullMessage);
   window.open(`tg://msg?text=${message}`);
-}
+};
 
-function copyToClipboard(fullMessage) {
+const copyToClipboard = (fullMessage) => {
   // Create a textarea element to hold the text
   const textarea = document.createElement("textarea");
   textarea.value = fullMessage;
@@ -363,9 +383,9 @@ function copyToClipboard(fullMessage) {
   document.body.removeChild(textarea);
 
   alert("Message copied to clipboard");
-}
+};
 
-function removeElement(className, index) {
+const removeElement = (className, index) => {
   const query = `.${className}[index="${index}"]`;
   console.log(query);
   const element = document.querySelector(query);
@@ -375,9 +395,9 @@ function removeElement(className, index) {
   } else {
     console.error("Element not found");
   }
-}
+};
 
-function clearData() {
+const clearData = () => {
   const elements = document.querySelectorAll("input, textarea");
   for (let element of elements) {
     element.value = null;
@@ -387,4 +407,4 @@ function clearData() {
   for (let row of rows) {
     row.remove();
   }
-}
+};

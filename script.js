@@ -16,6 +16,9 @@ function formatTime(value) {
 }
 
 flightTimeInput.addEventListener("input", () => {
+  if (flightTimeInput.value.length > flightTimeInput.maxlength) {
+    flightTimeInput.blur();
+  }
   flightTimeInput.value = flightTimeInput.value.replace(/\D/g, ""); // Remove non-numeric characters
   let formattedValue = formatTime(flightTimeInput.value);
   flightTimeInput.value = formattedValue;
@@ -37,12 +40,9 @@ telegramShareContainer.addEventListener("click", () =>
 
 clearButton.addEventListener("click", () => clearData());
 
-
 let missileIndex = 0;
 let ewIndex = 0;
 let cartridgeIndex = 0;
-
-
 
 function addMissileRow() {
   const missilesContainer = document.querySelector(".missile-container");

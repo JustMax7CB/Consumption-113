@@ -265,7 +265,8 @@ function saveCartridge() {
 
 function saveNotes() {
   const note = document.querySelector("textarea").value;
-  return note === "" ? null : note;
+  if (note !== undefined && note !== null) return note;
+  return "";
 }
 
 function createMessage(data) {

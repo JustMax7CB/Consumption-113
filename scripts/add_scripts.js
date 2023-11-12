@@ -35,7 +35,8 @@ const addEwRow = () => {
   inputElement.type = "number";
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות";
-  inputElement.id = "ew-quantity-input";
+  inputElement.id = `ew_quantity_input_${currentIndex}`;
+  inputElement.className = "ew-quantity-input";
 
   var removeButton = document.createElement("button");
   removeButton.type = "button";

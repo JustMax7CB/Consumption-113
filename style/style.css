@@ -13,6 +13,16 @@ body {
     justify-content: center;
 }
 
+nav {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+nav>a {
+    margin: 0 20px;
+}
+
 h1 {
     margin: 20px 5px 40px 5px;
 }
@@ -78,7 +88,8 @@ input::-webkit-inner-spin-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px 0;
+    margin: 10px 0;
+    flex-wrap: wrap;
 }
 
 #add_missile_btn {
@@ -86,8 +97,8 @@ input::-webkit-inner-spin-button {
     margin: 10px 0;
 }
 
-.missile_number {
-    width: 80px;
+#missile_number {
+    max-width: 90px;
 }
 
 input,
@@ -148,6 +159,7 @@ textarea {
     cursor: pointer;
 }
 
-#clear_btn {
+#clear_btn,
+#clear_memory_btn {
     margin: 20px;
 }

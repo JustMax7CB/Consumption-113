@@ -1,0 +1,169 @@
+const addEwRow = () => {
+  const EwContainer = document.querySelector(".ew-container");
+
+  const ewRows = document.querySelectorAll(".ew-row");
+  if (ewRows.length === 6) return;
+
+  const currentIndex = ewIndex++;
+
+  var ewRow = document.createElement("div");
+  ewRow.className = "ew-row item-row";
+  ewRow.setAttribute("index", currentIndex);
+
+  var typeSelectElement = document.createElement("select");
+  typeSelectElement.id = "ew-type-select";
+  typeSelectElement.className = "form-select";
+  for (let option of ewTypes) {
+    var optionElement = document.createElement("option");
+    optionElement.text = option;
+    optionElement.value = option;
+    typeSelectElement.appendChild(optionElement);
+  }
+
+  var pointSelectElement = document.createElement("select");
+  pointSelectElement.id = "ew-point-select";
+  pointSelectElement.className = "form-select";
+
+  for (let option of ewPoints) {
+    var optionElement = document.createElement("option");
+    optionElement.text = option;
+    optionElement.value = option;
+    pointSelectElement.appendChild(optionElement);
+  }
+
+  var inputElement = document.createElement("input");
+  inputElement.type = "number";
+  inputElement.inputMode = "numeric";
+  inputElement.placeholder = "כמות";
+  inputElement.id = "ew-quantity-input";
+
+  var removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.innerText = "מחק";
+  removeButton.className = "btn btn-danger";
+  removeButton.onclick = () => removeElement("ew-row", currentIndex);
+
+  ewRow.appendChild(typeSelectElement);
+  ewRow.appendChild(pointSelectElement);
+  ewRow.appendChild(inputElement);
+  ewRow.appendChild(removeButton);
+
+  EwContainer.appendChild(ewRow);
+};
+
+const addMissileRow = () => {
+  const missilesContainer = document.querySelector(".missile-container");
+
+  const missileRows = document.querySelectorAll(".missile-row");
+  if (missileRows.length === 7) return;
+
+  const currentIndex = missileIndex++;
+
+  var missileRow = document.createElement("div");
+  missileRow.className = `missile-row item-row`;
+  missileRow.setAttribute("index", `${currentIndex}`);
+
+  var selectElement = document.createElement("select");
+  selectElement.id = "missile-select";
+  selectElement.className = "form-select";
+  for (let option of missileTypes) {
+    var optionElement = document.createElement("option");
+    optionElement.text = option;
+    optionElement.value = option;
+    selectElement.appendChild(optionElement);
+  }
+
+  selectElement.addEventListener("change", () => {
+    if (selectElement.value === "פיגיון") {
+      const pointSelect = document.createElement("select");
+      pointSelect.id = "gatr_point_select";
+      pointSelect.className = "form-select gatr-point";
+      pointSelect.setAttribute("index", currentIndex);
+      for (let point of GATR_Points) {
+        var option = document.createElement("option");
+        option.text = point;
+        option.value = point;
+        pointSelect.appendChild(option);
+        missileRow.insertBefore(pointSelect, missileRow.children[2]);
+      }
+    }
+  });
+  selectElement.addEventListener("change", () => {
+    if (selectElement.value !== "פיגיון") {
+      removeElement("gatr-point", currentIndex);
+    }
+  });
+
+  var inputElement = document.createElement("input");
+  inputElement.type = "number";
+  inputElement.inputMode = "numeric";
+  inputElement.placeholder = "מסד טיל";
+  inputElement.className = "form-control";
+  inputElement.id = "missile_number";
+
+  var resultSelectElement = document.createElement("select");
+  resultSelectElement.id = "missile_result";
+  resultSelectElement.className = "form-select";
+
+  for (let option of resultOptions) {
+    var optionElement = document.createElement("option");
+    optionElement.text = option;
+    optionElement.value = option;
+    resultSelectElement.appendChild(optionElement);
+  }
+
+  var removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.innerText = "מחק";
+  removeButton.className = "btn btn-danger";
+  removeButton.onclick = () => removeElement("missile-row", currentIndex);
+
+  missileRow.appendChild(selectElement);
+  missileRow.appendChild(inputElement);
+  missileRow.appendChild(resultSelectElement);
+  missileRow.appendChild(removeButton);
+
+  missilesContainer.appendChild(missileRow);
+};
+
+const addCartridgeRow = () => {
+  var CartridgesContainer = document.querySelector(".cartridges-container");
+
+  const cartridgeRows = document.querySelectorAll(".cartridge-row");
+  if (cartridgeRows.length === 2) return;
+
+  const currentIndex = cartridgeIndex++;
+
+  var cartridgeRow = document.createElement("div");
+  cartridgeRow.className = "cartridge-row item-row";
+  cartridgeRow.setAttribute("index", currentIndex);
+
+  var typeSelectElement = document.createElement("select");
+  typeSelectElement.id = "cartridge_type_select";
+  typeSelectElement.className = "form-select";
+  for (let type of ["אימונים", "מבצעי"]) {
+    var optionElement = document.createElement("option");
+    optionElement.selected = true;
+    optionElement.text = type;
+    optionElement.value = type;
+    typeSelectElement.appendChild(optionElement);
+  }
+
+  var inputElement = document.createElement("input");
+  inputElement.type = "number";
+  inputElement.inputMode = "numeric";
+  inputElement.placeholder = "כמות פגזים";
+  inputElement.id = "cartridge_input";
+
+  var removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.innerText = "מחק";
+  removeButton.className = "btn btn-danger";
+  removeButton.onclick = () => removeElement("cartridge-row", currentIndex);
+
+  cartridgeRow.appendChild(typeSelectElement);
+  cartridgeRow.appendChild(inputElement);
+  cartridgeRow.appendChild(removeButton);
+
+  CartridgesContainer.appendChild(cartridgeRow);
+};

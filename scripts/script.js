@@ -64,8 +64,8 @@ const saveData = (sendFunction) => {
   };
 
   const fullMessage = createMessage(data);
-  const savedMessages = getAllSavedMessages() + [, fullMessage];
-  sendFunction(savedMessages);
+  // const savedMessages = getAllSavedMessages() + [, fullMessage];
+  sendFunction(fullMessage);
 };
 
 const sendSavedMessages = (sendFunction, savedMessages) => {

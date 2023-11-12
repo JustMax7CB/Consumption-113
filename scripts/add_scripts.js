@@ -48,7 +48,7 @@ const addEwRow = () => {
   ewRow.appendChild(inputElement);
   ewRow.appendChild(removeButton);
 
-  EwContainer.appendChild(ewRow);
+  EwContainer.insertBefore(ewRow, addEwButton);
 };
 
 const addMissileRow = () => {
@@ -123,7 +123,7 @@ const addMissileRow = () => {
   missileRow.appendChild(resultSelectElement);
   missileRow.appendChild(removeButton);
 
-  missilesContainer.appendChild(missileRow);
+  missilesContainer.insertBefore(missileRow, addMissileButton);
 };
 
 const addCartridgeRow = () => {
@@ -165,5 +165,5 @@ const addCartridgeRow = () => {
   cartridgeRow.appendChild(inputElement);
   cartridgeRow.appendChild(removeButton);
 
-  CartridgesContainer.appendChild(cartridgeRow);
+  CartridgesContainer.insertBefore(cartridgeRow, addCartridgeButton);
 };

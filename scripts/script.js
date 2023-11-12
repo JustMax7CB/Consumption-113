@@ -237,7 +237,7 @@ ${noteMessagePart}`;
   console.log("Full Message:");
   console.log(fullMessage);
 
-  // return fullMessage;
+  return fullMessage;
 };
 
 const sendToWhatsapp = (fullMessage) => {

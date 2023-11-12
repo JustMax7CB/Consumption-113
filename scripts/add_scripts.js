@@ -141,7 +141,7 @@ const addCartridgeRow = () => {
 
   var typeSelectElement = document.createElement("select");
   typeSelectElement.id = `cartridge_type_select_${currentIndex}`;
-  typeSelectElement.className = "form-select cartridge0-type-select";
+  typeSelectElement.className = "form-select cartridge-type-select";
   for (let type of ["אימונים", "מבצעי"]) {
     var optionElement = document.createElement("option");
     optionElement.selected = true;

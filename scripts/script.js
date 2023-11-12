@@ -138,11 +138,11 @@ const saveMissiles = () => {
 
   const missilesRows = document.querySelectorAll(".missile-row");
   for (let missileRow of missilesRows) {
-    const missileType = missileRow.querySelector("#missile-select").value;
-    const missileNumber = missileRow.querySelector("#missile_number").value;
-    const missileResult = missileRow.querySelector("#missile_result").value;
+    const missileType = missileRow.querySelector(".missile-select").value;
+    const missileNumber = missileRow.querySelector(".missile-number").value;
+    const missileResult = missileRow.querySelector(".missile-result").value;
     if (missileType === "פיגיון") {
-      gatrTube = missileRow.querySelector("#gatr_point_select").value;
+      gatrTube = missileRow.querySelector(".gatr-point-select").value;
     }
     missileList.push({
       Type: missileType,
@@ -159,9 +159,9 @@ const saveEw = () => {
 
   const ewRows = document.querySelectorAll(".ew-row");
   for (let ewRow of ewRows) {
-    const type = ewRow.querySelector("#ew-type-select").value;
-    const point = ewRow.querySelector("#ew-point-select").value;
-    const quantity = ewRow.querySelector("#ew-quantity-input").value;
+    const type = ewRow.querySelector(".ew-type-select").value;
+    const point = ewRow.querySelector(".ew-point-select").value;
+    const quantity = ewRow.querySelector(".ew-quantity-input").value;
     ewList.push({
       Type: type,
       Point: point,
@@ -178,8 +178,8 @@ const saveCartridge = () => {
   if (cartridgeRows.length === 0) return [];
 
   for (let row of cartridgeRows) {
-    const type = row.querySelector("#cartridge_type_select").value;
-    const quantity = row.querySelector("#cartridge_input").value;
+    const type = row.querySelector(".cartridge-type-select").value;
+    const quantity = row.querySelector(".cartridge-input").value;
     cartridgeList.push({
       Type: type,
       Quantity: quantity,

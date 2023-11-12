@@ -11,8 +11,8 @@ const addEwRow = () => {
   ewRow.setAttribute("index", currentIndex);
 
   var typeSelectElement = document.createElement("select");
-  typeSelectElement.id = "ew-type-select";
-  typeSelectElement.className = "form-select";
+  typeSelectElement.id = `ew_type_select_${currentIndex}`;
+  typeSelectElement.className = "form-select ew-type-select";
   for (let option of ewTypes) {
     var optionElement = document.createElement("option");
     optionElement.text = option;
@@ -21,8 +21,8 @@ const addEwRow = () => {
   }
 
   var pointSelectElement = document.createElement("select");
-  pointSelectElement.id = "ew-point-select";
-  pointSelectElement.className = "form-select";
+  pointSelectElement.id = `ew_point_select_${currentIndex}`;
+  pointSelectElement.className = "form-select ew-point-select";
 
   for (let option of ewPoints) {
     var optionElement = document.createElement("option");
@@ -64,8 +64,8 @@ const addMissileRow = () => {
   missileRow.setAttribute("index", `${currentIndex}`);
 
   var selectElement = document.createElement("select");
-  selectElement.id = "missile-select";
-  selectElement.className = "form-select";
+  selectElement.id = `missile_select_${currentIndex}`;
+  selectElement.className = "form-select missile-select";
   for (let option of missileTypes) {
     var optionElement = document.createElement("option");
     optionElement.text = option;
@@ -76,8 +76,8 @@ const addMissileRow = () => {
   selectElement.addEventListener("change", () => {
     if (selectElement.value === "פיגיון") {
       const pointSelect = document.createElement("select");
-      pointSelect.id = "gatr_point_select";
-      pointSelect.className = "form-select gatr-point";
+      pointSelect.id = `gatr_point_select-${currentIndex}`;
+      pointSelect.className = "form-select gatr-point-select";
       pointSelect.setAttribute("index", currentIndex);
       for (let point of GATR_Points) {
         var option = document.createElement("option");
@@ -98,12 +98,12 @@ const addMissileRow = () => {
   inputElement.type = "number";
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "מסד טיל";
-  inputElement.className = "form-control";
-  inputElement.id = "missile_number";
+  inputElement.className = "form-control missile-number";
+  inputElement.id = `missile_number_${currentIndex}`;
 
   var resultSelectElement = document.createElement("select");
-  resultSelectElement.id = "missile_result";
-  resultSelectElement.className = "form-select";
+  resultSelectElement.id = `missile_result_${currentIndex}`;
+  resultSelectElement.className = "form-select missile-result";
 
   for (let option of resultOptions) {
     var optionElement = document.createElement("option");
@@ -139,8 +139,8 @@ const addCartridgeRow = () => {
   cartridgeRow.setAttribute("index", currentIndex);
 
   var typeSelectElement = document.createElement("select");
-  typeSelectElement.id = "cartridge_type_select";
-  typeSelectElement.className = "form-select";
+  typeSelectElement.id = `cartridge_type_select_${currentIndex}`;
+  typeSelectElement.className = "form-select cartridge0-type-select";
   for (let type of ["אימונים", "מבצעי"]) {
     var optionElement = document.createElement("option");
     optionElement.selected = true;
@@ -153,7 +153,8 @@ const addCartridgeRow = () => {
   inputElement.type = "number";
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות פגזים";
-  inputElement.id = "cartridge_input";
+  inputElement.id = `cartridge_input_${currentIndex}`;
+  inputElement.className = "cartridge-input";
 
   var removeButton = document.createElement("button");
   removeButton.type = "button";

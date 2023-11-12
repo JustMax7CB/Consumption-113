@@ -202,7 +202,8 @@ const createMessage = (data) => {
   const heliNumber = data.heliNumber;
   const note = data.note;
 
-  const flightDetailsMessagePart = `שם טייס: ${pilotName.Pilot}`;
+  const flightDetailsMessagePart =
+    pilotName.Pilot !== "" ? `שם טייס: ${pilotName.Pilot}` : "";
 
   const heliNumberMessagePart = `מסוק ${heliNumber}`;
   let ewsMessagePart = ``;

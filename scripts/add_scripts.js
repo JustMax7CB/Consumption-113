@@ -36,12 +36,12 @@ const addEwRow = () => {
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות";
   inputElement.id = `ew_quantity_input_${currentIndex}`;
-  inputElement.className = "ew-quantity-input";
+  inputElement.className = "ew-quantity-input form-control";
 
   var removeButton = document.createElement("button");
   removeButton.type = "button";
   removeButton.innerText = "מחק";
-  removeButton.className = "btn btn-danger";
+  removeButton.className = "btn btn-danger remove-btn";
   removeButton.onclick = () => removeElement("ew-row", currentIndex);
 
   ewRow.appendChild(typeSelectElement);
@@ -116,7 +116,7 @@ const addMissileRow = () => {
   var removeButton = document.createElement("button");
   removeButton.type = "button";
   removeButton.innerText = "מחק";
-  removeButton.className = "btn btn-danger";
+  removeButton.className = "btn btn-danger  remove-btn";
   removeButton.onclick = () => removeElement("missile-row", currentIndex);
 
   missileRow.appendChild(selectElement);
@@ -155,12 +155,12 @@ const addCartridgeRow = () => {
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות פגזים";
   inputElement.id = `cartridge_input_${currentIndex}`;
-  inputElement.className = "cartridge-input";
+  inputElement.className = "cartridge-input form-control";
 
   var removeButton = document.createElement("button");
   removeButton.type = "button";
   removeButton.innerText = "מחק";
-  removeButton.className = "btn btn-danger";
+  removeButton.className = "btn btn-danger  remove-btn";
   removeButton.onclick = () => removeElement("cartridge-row", currentIndex);
 
   cartridgeRow.appendChild(typeSelectElement);

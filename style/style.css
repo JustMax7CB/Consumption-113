@@ -115,6 +115,7 @@ select {
 }
 
 .btn-primary,
+.remove-btn,
 .form-select {
     font-size: 14px;
     width: 8em;

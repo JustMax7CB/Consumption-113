@@ -155,7 +155,7 @@ const addCartridgeRow = () => {
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות פגזים";
   inputElement.id = `cartridge_input_${currentIndex}`;
-  inputElement.className = "cartridge-input form-control  data-number";
+  inputElement.className = "cartridge-input form-control data-number";
 
   var removeButton = document.createElement("button");
   removeButton.type = "button";

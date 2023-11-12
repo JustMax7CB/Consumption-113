@@ -36,7 +36,7 @@ const addEwRow = () => {
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות";
   inputElement.id = `ew_quantity_input_${currentIndex}`;
-  inputElement.className = "ew-quantity-input form-control";
+  inputElement.className = "ew-quantity-input form-control  data-number";
 
   var removeButton = document.createElement("button");
   removeButton.type = "button";
@@ -99,7 +99,7 @@ const addMissileRow = () => {
   inputElement.type = "number";
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "מסד טיל";
-  inputElement.className = "form-control missile-number";
+  inputElement.className = "form-control missile-number data-number";
   inputElement.id = `missile_number_${currentIndex}`;
 
   var resultSelectElement = document.createElement("select");
@@ -155,7 +155,7 @@ const addCartridgeRow = () => {
   inputElement.inputMode = "numeric";
   inputElement.placeholder = "כמות פגזים";
   inputElement.id = `cartridge_input_${currentIndex}`;
-  inputElement.className = "cartridge-input form-control";
+  inputElement.className = "cartridge-input form-control  data-number";
 
   var removeButton = document.createElement("button");
   removeButton.type = "button";

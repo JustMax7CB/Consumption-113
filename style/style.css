@@ -114,6 +114,10 @@ select {
     font-size: 20px;
 }
 
+.form-control {
+    max-width: 120px;
+}
+
 .btn-primary,
 .remove-btn,
 .form-select {

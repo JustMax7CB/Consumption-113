@@ -53,7 +53,7 @@ const addEwRow = () => {
 };
 
 const addMissileRow = () => {
-  const missilesContainer = document.querySelector(".missile-container");
+  let missilesContainer = document.querySelector(".missile-container");
 
   const missileRows = document.querySelectorAll(".missile-row");
   if (missileRows.length === 7) return;
@@ -73,27 +73,6 @@ const addMissileRow = () => {
     optionElement.value = option;
     selectElement.appendChild(optionElement);
   }
-
-  selectElement.addEventListener("change", () => {
-    if (selectElement.value === "פיגיון") {
-      const pointSelect = document.createElement("select");
-      pointSelect.id = `gatr_point_select-${currentIndex}`;
-      pointSelect.className = "form-select gatr-point-select";
-      pointSelect.setAttribute("index", currentIndex);
-      for (let point of GATR_Points) {
-        var option = document.createElement("option");
-        option.text = point;
-        option.value = point;
-        pointSelect.appendChild(option);
-        missileRow.insertBefore(pointSelect, missileRow.children[2]);
-      }
-    }
-  });
-  selectElement.addEventListener("change", () => {
-    if (selectElement.value !== "פיגיון") {
-      removeElement("gatr-point", currentIndex);
-    }
-  });
 
   var inputElement = document.createElement("input");
   inputElement.type = "number";

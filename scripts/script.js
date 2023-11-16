@@ -141,14 +141,26 @@ const saveMissiles = () => {
     const missileType = missileRow.querySelector(".missile-select").value;
     const missileNumber = missileRow.querySelector(".missile-number").value;
     const missileResult = missileRow.querySelector(".missile-result").value;
-    if (missileType === "פיגיון") {
-      gatrTube = missileRow.querySelector(".gatr-point-select").value;
-    }
+
     missileList.push({
       Type: missileType,
       SerialNumber: missileNumber,
       Result: missileResult,
       Tube: gatrTube,
+    });
+  }
+
+  const gatrMissiles = document.querySelectorAll(".gatr-row");
+  for (let gatrMissile of gatrMissiles) {
+    const missileType = "פיגיון";
+    const missileTube = gatrMissile.getAttribute("tube");
+    const missileNumber = gatrMissile.querySelector(".gatr-input").value;
+    const missileResult = gatrMissile.querySelector(".gatr-select").value;
+    missileList.push({
+      Type: missileType,
+      SerialNumber: missileNumber,
+      Result: missileResult,
+      Tube: missileTube,
     });
   }
   return missileList;
@@ -215,7 +227,7 @@ const createMessage = (data) => {
   let TubeMessagePart = ``;
   for (let missile of missiles) {
     if (missile.Tube !== null) {
-      TubeMessagePart = missile.Tube;
+      TubeMessagePart = `צינור #${missile.Tube}`;
     }
     missilesMessagePart += `טיל ${missile.Type} מסד ${missile.SerialNumber} ${TubeMessagePart} - ${missile.Result}\n`;
   }

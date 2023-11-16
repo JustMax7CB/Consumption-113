@@ -120,7 +120,7 @@ select {
 
 .btn-primary,
 .remove-btn,
-.form-select {
+.form-select:not(.gatr-select) {
     font-size: 14px;
     width: 8em;
     margin: 15px 5px;

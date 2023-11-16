@@ -12,7 +12,6 @@ const missileTypes = [
   'פתיל 2 נ"ט',
   "פתיל 4",
   "תמוז 5",
-  "פיגיון",
 ];
 
 const GATR_Points = [

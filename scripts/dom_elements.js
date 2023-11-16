@@ -10,3 +10,4 @@ const clearMemoryButton = document.querySelector("#clear_memory_btn");
 const whatsappShareContainer = document.querySelector("#whatsapp-container");
 const telegramShareContainer = document.querySelector("#telegram-container");
 // const flightTimeInput = document.querySelector("#flight_time");
+

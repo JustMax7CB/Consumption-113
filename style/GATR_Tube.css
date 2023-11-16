@@ -1,0 +1,76 @@
+.outer-circle {
+
+    --big-radius: 170px;
+    border: 1px solid black;
+    width: var(--big-radius);
+    height: var(--big-radius);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+}
+
+.inner-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    width: calc(var(--big-radius) / 7);
+    height: calc(var(--big-radius) / 7);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.inner-circle:before {
+    content: attr(data-tube);
+    color: rgba(12, 4, 4, 0.35);
+    font-size: 15px;
+}
+
+.inner-circle.selected {
+    background-color: rgba(153, 212, 59, 1);
+    color: white;
+}
+
+.inner-circle.selected:before {
+    color: white;
+}
+
+#gatr_inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.gatr-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gatr-input,
+.gatr-select {
+    width: 120px;
+    height: auto;
+}
+
+.gatr-input::placeholder {
+    font-size: 10px;
+    color: #999;
+}

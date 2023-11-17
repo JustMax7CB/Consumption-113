@@ -41,13 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
         GATR_InputDiv.appendChild(gatrRow);
       } else {
         try {
-          const inputElementToRemove = document.querySelector(`#input_${tube}`);
-          const selectElementToRemove = document.querySelector(
-            `#gatr_select_${tube}`
-          );
-          if (inputElementToRemove && selectElementToRemove) {
-            inputElementToRemove.remove();
-            selectElementToRemove.remove();
+          const divToRemove = document.querySelector(`#gatr_row_${tube}`);
+          if (divToRemove) {
+            divToRemove.remove();
           } else {
             throw error;
           }

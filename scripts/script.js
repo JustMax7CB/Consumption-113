@@ -46,7 +46,6 @@ const saveData = (sendFunction) => {
   // } else {
   //   flightTimeInput.style.border = normalBorderStyle;
 
-  const pilotName = saveFlightDetails();
   const heliNumber = document.querySelector("#heli_number").value;
   const missiles = saveMissiles();
   const ews = saveEw();
@@ -55,7 +54,6 @@ const saveData = (sendFunction) => {
 
   const data = {
     // flightDetails: flightDetails,
-    pilotName: pilotName,
     heliNumber: heliNumber,
     missiles: missiles,
     ews: ews,
@@ -78,7 +76,6 @@ const sendSavedMessages = (sendFunction, savedMessages) => {
 
 const saveMessage = () => {
   if (!formValidation()) return;
-  const flightDetails = saveFlightDetails();
   const timeValid = flightDetails !== null ? checkTime(flightDetails) : true;
   if (!timeValid) {
     flightTimeInput.style.border = "2px solid red";
@@ -93,7 +90,6 @@ const saveMessage = () => {
     const note = saveNotes();
 
     const data = {
-      flightDetails: flightDetails,
       heliNumber: heliNumber,
       missiles: missiles,
       ews: ews,
@@ -119,18 +115,6 @@ const loadMessages = () => {
   else alert("דיווחים נטענו בהצלחה");
 };
 
-const saveFlightDetails = () => {
-  const pilotName = document.querySelector("#pilot_name").value;
-  return {
-    Pilot: pilotName,
-  };
-  // const flightTime = document.querySelector("#flight_time").value;
-  // if (pilotName === "" && flightTime === "") return null;
-  // return {
-  //   Pilot: pilotName,
-  //   Time: flightTime,
-  // };
-};
 
 const saveMissiles = () => {
   let missileList = [];
@@ -207,15 +191,12 @@ const saveNotes = () => {
 };
 
 const createMessage = (data) => {
-  const pilotName = data.pilotName;
   const missiles = data.missiles;
   const ews = data.ews;
   const cartridges = data.cartridges;
   const heliNumber = data.heliNumber;
   const note = data.note;
 
-  const flightDetailsMessagePart =
-    pilotName.Pilot !== "" ? `שם טייס: ${pilotName.Pilot}` : "";
 
   const heliNumberMessagePart = `מסוק ${heliNumber}`;
   let ewsMessagePart = ``;
@@ -240,8 +221,6 @@ const createMessage = (data) => {
   let noteMessagePart = note !== null ? note : null;
 
   const fullMessage = `🐝  ${heliNumberMessagePart}  🐝
-${flightDetailsMessagePart}
-
 ${ewsMessagePart}
 ${missilesMessagePart}
 ${cartridgeMessagePart}

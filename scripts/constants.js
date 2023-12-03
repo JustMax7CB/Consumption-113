@@ -18,7 +18,7 @@ const missileTypes = [
   'תמוז 5 נב"ר 9',
   'תמוז 5 נב"ר 18',
   'תמוז 5 נ"ט',
-  'תמוז 5 נ"א'
+  'תמוז 5 נ"א',
 ];
 
 const ewTypes = ["802", "206", "RR-180", "RR-170"];
@@ -39,6 +39,7 @@ const resultOptions = [
   "דלתא",
   'לנ"פ',
   "נפל",
+  "Missile Fail",
   "Missfire",
   "Hangfire",
 ];

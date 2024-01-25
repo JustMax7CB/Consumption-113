@@ -22,7 +22,7 @@ const missileTypes = [
   'תמוז 5 נ"א',
 ];
 
-const ewTypes = ["802", "206", "RR-180", "RR-170"];
+const ewTypes = ["706" ,"802", "206", "RR-180", "RR-170"];
 
 const ewPoints = [
   "כ.י חיצוני",

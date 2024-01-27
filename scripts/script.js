@@ -265,6 +265,11 @@ const clearData = () => {
   for (let row of rows) {
     row.remove();
   }
+
+  const tubes = document.querySelectorAll(".inner-circle")
+  for (let circle of tubes) {
+    circle.classList.remove("selected");
+  }
 };
 
 const formValidation = () => {

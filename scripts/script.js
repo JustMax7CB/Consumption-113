@@ -270,6 +270,11 @@ const clearData = () => {
   for (let circle of tubes) {
     circle.classList.remove("selected");
   }
+
+  const gatrMissiles = document.querySelectorAll(".gatr-row");
+for (let row of gatrMissiles) {
+  row.remove();
+}
 };
 
 const formValidation = () => {

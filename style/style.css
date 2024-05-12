@@ -123,11 +123,11 @@ select {
 .form-select:not(.gatr-select) {
     font-size: 14px;
     width: 8em;
-    margin: 15px 5px;
+    margin: 8px 5px;
 }
 
 .ew-row {
-    width: 70%;
+    width: auto;
 }
 
 #ew-quantity-input,

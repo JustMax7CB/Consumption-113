@@ -1,0 +1,60 @@
+/* Side navigation styling */
+.sidenav {
+  z-index: 999;
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  left: -250px;
+  top: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.4s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #fff;
+  display: block;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 36px;
+}
+
+/* Show the sidenav */
+.sidenav.open {
+  left: 0;
+}
+
+/* Hamburger styling */
+.hamburger {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 30px;
+  height: 22px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: opacity 0.4s ease;
+}
+
+.hamburger.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  margin: 4px 0;
+  background: #333;
+  border-radius: 2px;
+}

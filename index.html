@@ -21,7 +21,10 @@
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleSideNav()">&times;</a>
         <a href="index.html">דף הבית</a>
-        <a href="#" onclick="checkCredentials()">עמוד מנהל</a>
+        <div class="admin-logout">
+            <a href="#" onclick="checkCredentials()">עמוד מנהל</a>
+            <button type="button" class="btn btn-outline-info" id="logoutBtn" onclick="adminLogout()">התנתק</button>
+        </div>
       </div>
 
       <div class="hamburger" onclick="toggleSideNav()">

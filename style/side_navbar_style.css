@@ -58,3 +58,10 @@
   background: #333;
   border-radius: 2px;
 }
+
+.admin-logout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

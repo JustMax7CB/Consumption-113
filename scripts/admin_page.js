@@ -1,23 +1,25 @@
-function openTab(evt, tab) {
+const loadLauncher = (sid) => {
   // Declare all variables
   var i, tabcontent, tablinks;
 
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabs-content");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
+  console.log(`Loaded Launcher id: ${sid}`);
 
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
+  const launcherData = loadLauncherData(sid);
+  const launcherStatus = launcherData.status;
 
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(tab).style.display = "block";
-  evt.currentTarget.className += " active";
-}
+  launcherStatus.forEach((tube) => {
+    const circleElement = document.querySelector(`[data-tube="${tube.tube}"]`);
+    circleElement.setAttribute("launch-count", tube.launches);
+  });
+
+  setTubeContent();
+};
+
+const loadLauncherData = (sid) => {
+  const configFile = JSON.parse(localStorage.getItem("configFile"));
+  console.log(configFile);
+  return configFile.find((launcher) => launcher.sid === sid);
+};
 
 const loadJsonFile = () => {
   // Trigger the hidden file input
@@ -62,15 +64,15 @@ const handleConfigChange = () => {
   if (Array.isArray(config)) {
     config.forEach((launcher) => {
       const tabElement = document.createElement("li");
-      tabElement.classList += "nav-item";
+      tabElement.classList.add("nav-item");
 
       const buttonElement = document.createElement("button");
-      buttonElement.classList += "tablinks nav-link";
-      buttonElement.onclick = `openTab(event, "{launcher.sid}")`;
+      buttonElement.classList.add("tablinks", "nav-link");
       buttonElement.innerText = launcher.sid;
 
-      tabElement.appendChild(buttonElement);
+      buttonElement.onclick = (e) => loadLauncher(launcher.sid);
 
+      tabElement.appendChild(buttonElement);
       addTab(tabElement);
     });
   } else {
@@ -106,3 +108,29 @@ const addNewLauncher = () => {
     localStorage.setItem("configFile", JSON.stringify(loadedConfig));
   }
 };
+
+const setTubeColor = (element, count) => {
+  let bgColor = "#000000";
+  if (count <= 30) {
+    bgColor = "#03ff90";
+  } else if (count <= 45) {
+    bgColor = "#fcdb03";
+  } else if (count < 50) {
+    bgColor = "#fa8323";
+  } else if (count == 50) {
+    bgColor = "#fc0f03";
+  }
+
+  element.style.backgroundColor = bgColor;
+};
+const setTubeContent = () => {
+  document.querySelectorAll(".inner-circle").forEach((el) => {
+    const tube = el.getAttribute("data-tube");
+    const count = parseInt(el.getAttribute("launch-count"), 10);
+    el.setAttribute("data-label", `${tube}\n${count}`);
+
+    setTubeColor(el, count);
+  });
+};
+
+setTubeContent();

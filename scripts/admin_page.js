@@ -207,7 +207,7 @@ const increaseQuantity = () => {
 
 const startDecreasing = () => {
   // Start with slow interval
-  intervalId = setInterval(increaseQuantity, 200);
+  intervalId = setInterval(decreaseQuantity, 200);
 
   // After 2.5 seconds, switch to faster interval
   timeoutId = setTimeout(() => {

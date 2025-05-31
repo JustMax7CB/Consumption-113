@@ -202,3 +202,9 @@ body {
   font-size: 35px;
   font-weight: 600;
 }
+
+button {
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none;     /* IE10+ */
+}

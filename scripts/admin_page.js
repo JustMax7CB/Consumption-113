@@ -1,8 +1,20 @@
 var selectedLauncherId;
 var selectedTubeEl;
 
+const clearSelections = () => {
+  selectedLauncherId = null;
+  selectedTubeEl = null;
+  getElementByClass("tube_number_subtitle").innerText = "";
+};
+
 const loadLauncher = (sid) => {
+  if (selectedLauncherId) {
+    saveAction();
+  }
+
   console.log(`Loaded Launcher id: ${sid}`);
+  clearSelections();
+  getElementByClass("tube_number_subtitle").innerText = "";
 
   const launcherData = loadLauncherData(sid);
   const launcherStatus = launcherData.status;
@@ -45,6 +57,8 @@ document
         setConfigFile(jsonData);
         handleConfigChange();
         // You can now use jsonData programmatically
+
+        refresh();
       } catch (err) {
         console.error("error parsing json file");
       }
@@ -118,10 +132,10 @@ const addNewLauncher = () => {
     setConfigFile(config);
   }
 
-  location.reload(true);
+  refresh();
 };
 
-const setTubeColor = (element, count) => {
+const setTubeColor = (element, count, isSelected = false) => {
   let bgColor = "#000000";
   if (count <= 30) {
     bgColor = "#03ff90";
@@ -133,8 +147,17 @@ const setTubeColor = (element, count) => {
     bgColor = "#fc0f03";
   }
 
+  // Brighten if selected
+  if (isSelected) {
+    bgColor = brightenHexColor(bgColor, 75);
+    element.style.borderWidth = "3px";
+  } else {
+    element.style.borderWidth = "1px";
+  }
+
   element.style.backgroundColor = bgColor;
 };
+
 const setTubeContent = () => {
   document.querySelectorAll(".inner-circle").forEach((el) => {
     const tube = el.getAttribute("data-tube");
@@ -171,7 +194,7 @@ const increaseQuantity = () => {
   tubeElement.setAttribute("launch-count", newQuantity);
 
   tubeElement.setAttribute("data-label", `${tubeNumber}\n${newQuantity}`);
-  setTubeColor(tubeElement, newQuantity);
+  setTubeColor(tubeElement, newQuantity, true);
 };
 
 const startDecreasing = () => {
@@ -199,16 +222,34 @@ const decreaseQuantity = () => {
   tubeElement.setAttribute("launch-count", newQuantity);
 
   tubeElement.setAttribute("data-label", `${tubeNumber}\n${newQuantity}`);
-  setTubeColor(tubeElement, newQuantity);
+  setTubeColor(tubeElement, newQuantity, true);
+};
+
+const hideNonLoadedUI = () => {
+  getElementByClass("launcher").style.display = "none";
+  getElementByClass("quantity-control").style.display = "none";
+  getElementByClass("tabs").style.display = "none";
+};
+
+const showLoadedUI = () => {
+  getElementByClass("launcher").style.display = "block";
+  getElementByClass("quantity-control").style.display = "flex";
+  getElementByClass("tabs").style.display = "flex";
 };
 
 document.addEventListener("DOMContentLoaded", function () {
   checkAuthentication();
+
+  if (!selectedLauncherId) {
+    hideNonLoadedUI();
+  }
+
   document.querySelector("#launcher_input").value = "";
   const configFile = loadConfigFile();
   if (configFile) {
     handleConfigChange();
     setTubeContent();
+    showLoadedUI();
   }
 
   document.querySelector(".quantity-input").value = 0;
@@ -216,35 +257,47 @@ document.addEventListener("DOMContentLoaded", function () {
   // Get all inner-circle elements
   var innerCircles = document.querySelectorAll(".inner-circle");
 
-  // Add click event listener to each inner-circle
-  innerCircles.forEach(function (circle) {
-    circle.addEventListener("click", function () {
+  innerCircles.forEach((circle) => {
+    circle.addEventListener("click", () => {
       if (!selectedLauncherId) return;
-      const launchCount = circle.getAttribute("launch-count");
-      console.log(launchCount);
 
+      const launchCount = parseInt(circle.getAttribute("launch-count"), 10);
+      const tubeId = circle.getAttribute("data-tube");
       const quantityInputEl = document.querySelector(".quantity-input");
-      quantityInputEl.value = parseInt(launchCount);
 
+      if (quantityInputEl) {
+        quantityInputEl.value = launchCount;
+      }
+
+      // Reset previously selected element's color
+      if (selectedTubeEl) {
+        const previousCount = parseInt(
+          selectedTubeEl.getAttribute("launch-count"),
+          10
+        );
+        setTubeColor(selectedTubeEl, previousCount, false);
+      }
+
+      // Set new selection
       selectedTubeEl = circle;
+      setTubeColor(selectedTubeEl, launchCount, true); // highlight selected
+
+      const tubeLabel = getElementByClass("tube_number_subtitle");
+      if (tubeLabel) {
+        tubeLabel.innerText = `צינור מס' ${tubeId}`;
+      }
     });
   });
 });
 
-const saveAction = () => {
+const saveAction = (saveToDevice = false) => {
   try {
     const tubeElements = document.querySelectorAll(".inner-circle");
 
-    const tubeObjects = [];
-
-    tubeElements.forEach((tubeEl) => {
-      const object = {
-        tube: tubeEl.getAttribute("data-tube"),
-        launches: tubeEl.getAttribute("launch-count"),
-      };
-
-      tubeObjects.push(object);
-    });
+    const tubeObjects = Array.from(tubeElements).map((el) => ({
+      tube: el.getAttribute("data-tube"),
+      launches: el.getAttribute("launch-count"),
+    }));
 
     const newLauncherData = {
       sid: selectedLauncherId,
@@ -252,20 +305,24 @@ const saveAction = () => {
     };
 
     const configFile = loadConfigFile();
-
-    const launcherDataIndex = configFile.findIndex(
+    const launcherIndex = configFile.findIndex(
       (launcher) => launcher.sid === selectedLauncherId
     );
 
-    configFile[launcherDataIndex] = newLauncherData;
+    if (launcherIndex === -1) {
+      console.warn("Launcher ID not found in config file.");
+      return;
+    }
+
+    configFile[launcherIndex] = newLauncherData;
 
     setConfigFile(configFile);
-
-    saveConfigFileToDevice(configFile);
-
-    alert("נתונים נשמרו בהצלחה!");
-  } catch {
-    console.error("Failed to save new launcher data json");
+    if (saveToDevice) {
+      saveConfigFileToDevice(configFile);
+      alert("נתונים נשמרו בהצלחה!");
+    }
+  } catch (error) {
+    console.error("Failed to save new launcher data json", error);
   }
 };
 

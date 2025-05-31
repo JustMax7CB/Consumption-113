@@ -342,7 +342,8 @@ const saveAction = (saveToDevice = false) => {
 
 document.querySelector(".quantity-input").addEventListener("input", (e) => {
   if (!selectedTubeEl) return;
-  const newValue = parseInt(e.target.value);
+
+  const newValue = e.target.value === "" ? 0 : parseInt(e.target.value);
   if (newValue >= 50) {
     selectedTubeEl.setAttribute("launch-count", 50);
     e.target.value = 50;

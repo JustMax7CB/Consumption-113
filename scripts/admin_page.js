@@ -132,6 +132,7 @@ const addNewLauncher = () => {
     setConfigFile(config);
   }
 
+  saveAction();
   refresh();
 };
 

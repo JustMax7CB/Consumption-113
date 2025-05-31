@@ -23,3 +23,29 @@ function formatTime(value) {
   }
   return value;
 }
+
+function loadConfigFile() {
+  return JSON.parse(localStorage.getItem("configFile", null));
+}
+
+function setConfigFile(config) {
+  localStorage.setItem("configFile", JSON.stringify(config));
+}
+
+async function saveConfigFileToDevice(configJsonArray) {
+  const fileHandle = await window.showSaveFilePicker({
+    suggestedName: "GATRConfigFile.json",
+    types: [
+      {
+        description: "JSON Files",
+        accept: { "application/json": [".json"] },
+      },
+    ],
+  });
+
+  const writableStream = await fileHandle.createWritable();
+  const content = JSON.stringify(configJsonArray, null, 2); // Pretty print
+
+  await writableStream.write(content);
+  await writableStream.close();
+}

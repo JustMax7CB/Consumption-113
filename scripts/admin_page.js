@@ -1,13 +1,15 @@
-const loadLauncher = (sid) => {
-  // Declare all variables
-  var i, tabcontent, tablinks;
+var selectedLauncherId;
+var selectedTubeEl;
 
+const loadLauncher = (sid) => {
   console.log(`Loaded Launcher id: ${sid}`);
 
   const launcherData = loadLauncherData(sid);
   const launcherStatus = launcherData.status;
+  selectedLauncherId = sid;
 
   launcherStatus.forEach((tube) => {
+    console.log(tube);
     const circleElement = document.querySelector(`[data-tube="${tube.tube}"]`);
     circleElement.setAttribute("launch-count", tube.launches);
   });
@@ -16,7 +18,7 @@ const loadLauncher = (sid) => {
 };
 
 const loadLauncherData = (sid) => {
-  const configFile = JSON.parse(localStorage.getItem("configFile"));
+  const configFile = loadConfigFile();
   console.log(configFile);
   return configFile.find((launcher) => launcher.sid === sid);
 };
@@ -36,9 +38,11 @@ document
     reader.onload = (e) => {
       try {
         const jsonData = JSON.parse(e.target.result);
-        console.table(jsonData);
-        localStorage.setItem("configFile", JSON.stringify(jsonData));
-
+        const alreadyStoredConfig = loadConfigFile();
+        if (alreadyStoredConfig) {
+          console.log(alreadyStoredConfig);
+        }
+        setConfigFile(jsonData);
         handleConfigChange();
         // You can now use jsonData programmatically
       } catch (err) {
@@ -59,7 +63,7 @@ const handleConfigChange = () => {
     tabsDiv.appendChild(tabElement);
   };
 
-  const config = JSON.parse(localStorage.getItem("configFile"));
+  const config = loadConfigFile();
 
   if (Array.isArray(config)) {
     config.forEach((launcher) => {
@@ -70,7 +74,22 @@ const handleConfigChange = () => {
       buttonElement.classList.add("tablinks", "nav-link");
       buttonElement.innerText = launcher.sid;
 
-      buttonElement.onclick = (e) => loadLauncher(launcher.sid);
+      buttonElement.onclick = (e) => {
+        // Remove "active" class from all tabs
+        document.querySelectorAll(".tablinks").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        // Add "active" class to clicked tab
+        e.currentTarget.classList.add("active");
+
+        // Load launcher
+        loadLauncher(launcher.sid);
+
+        document.querySelector(
+          ".selected-launcher-id"
+        ).textContent = `משגר מס"ד ${launcher.sid}`;
+      };
 
       tabElement.appendChild(buttonElement);
       addTab(tabElement);
@@ -82,31 +101,24 @@ const handleConfigChange = () => {
 
 const addNewLauncher = () => {
   const sid = document.querySelector("#launcher_input").value;
-  console.log(sid);
-  const newLauncher = {
-    sid: sid,
-    status: [
-      {
-        tube: 2,
-        launches: 0,
-      },
-      {
-        tube: 5,
-        launches: 0,
-      },
-      {
-        tube: 6,
-        launches: 0,
-      },
-    ],
-  };
 
-  const loadedConfig = JSON.parse(localStorage.getItem("configFile"));
+  if (!sid) {
+    alert('נדרש מס"ד להוספה');
+    return;
+  }
+  const newLauncher = new Launcher(sid);
+
+  const loadedConfig = loadConfigFile();
 
   if (loadedConfig) {
     loadedConfig.push(newLauncher);
-    localStorage.setItem("configFile", JSON.stringify(loadedConfig));
+    setConfigFile(loadedConfig);
+  } else {
+    const config = [newLauncher];
+    setConfigFile(config);
   }
+
+  location.reload(true);
 };
 
 const setTubeColor = (element, count) => {
@@ -126,11 +138,149 @@ const setTubeColor = (element, count) => {
 const setTubeContent = () => {
   document.querySelectorAll(".inner-circle").forEach((el) => {
     const tube = el.getAttribute("data-tube");
-    const count = parseInt(el.getAttribute("launch-count"), 10);
+    const count = parseInt(el.getAttribute("launch-count"), 0);
     el.setAttribute("data-label", `${tube}\n${count}`);
 
     setTubeColor(el, count);
   });
 };
 
-setTubeContent();
+let intervalId;
+
+const startIncreasing = () => {
+  intervalId = setInterval(() => {
+    increaseQuantity();
+  }, 200); // Repeats every 200ms while held
+};
+
+const stopIncreasing = () => {
+  clearInterval(intervalId);
+};
+
+const increaseQuantity = () => {
+  if (!selectedLauncherId || !selectedTubeEl) return;
+  const tubeElement = selectedTubeEl;
+  const tubeNumber = tubeElement.getAttribute("data-tube");
+  const currentQuantity = parseInt(tubeElement.getAttribute("launch-count"));
+
+  if (currentQuantity === 50) return;
+  const quantityInputEl = document.querySelector(".quantity-input");
+
+  const newQuantity = currentQuantity + 1;
+  quantityInputEl.value = newQuantity;
+  tubeElement.setAttribute("launch-count", newQuantity);
+
+  tubeElement.setAttribute("data-label", `${tubeNumber}\n${newQuantity}`);
+  setTubeColor(tubeElement, newQuantity);
+};
+
+const startDecreasing = () => {
+  intervalId = setInterval(() => {
+    decreaseQuantity();
+  }, 200); // Repeats every 200ms while held
+};
+
+const stopDecreasing = () => {
+  clearInterval(intervalId);
+};
+
+const decreaseQuantity = () => {
+  if (!selectedLauncherId || !selectedTubeEl) return;
+  const tubeElement = selectedTubeEl;
+  const tubeNumber = tubeElement.getAttribute("data-tube");
+  const currentQuantity = parseInt(tubeElement.getAttribute("launch-count"));
+
+  if (currentQuantity == 0) return;
+
+  const quantityInputEl = document.querySelector(".quantity-input");
+
+  const newQuantity = currentQuantity - 1;
+  quantityInputEl.value = newQuantity;
+  tubeElement.setAttribute("launch-count", newQuantity);
+
+  tubeElement.setAttribute("data-label", `${tubeNumber}\n${newQuantity}`);
+  setTubeColor(tubeElement, newQuantity);
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  checkAuthentication();
+  document.querySelector("#launcher_input").value = "";
+  const configFile = loadConfigFile();
+  if (configFile) {
+    handleConfigChange();
+    setTubeContent();
+  }
+
+  document.querySelector(".quantity-input").value = 0;
+
+  // Get all inner-circle elements
+  var innerCircles = document.querySelectorAll(".inner-circle");
+
+  // Add click event listener to each inner-circle
+  innerCircles.forEach(function (circle) {
+    circle.addEventListener("click", function () {
+      if (!selectedLauncherId) return;
+      const launchCount = circle.getAttribute("launch-count");
+      console.log(launchCount);
+
+      const quantityInputEl = document.querySelector(".quantity-input");
+      quantityInputEl.value = parseInt(launchCount);
+
+      selectedTubeEl = circle;
+    });
+  });
+});
+
+const saveAction = () => {
+  try {
+    const tubeElements = document.querySelectorAll(".inner-circle");
+
+    const tubeObjects = [];
+
+    tubeElements.forEach((tubeEl) => {
+      const object = {
+        tube: tubeEl.getAttribute("data-tube"),
+        launches: tubeEl.getAttribute("launch-count"),
+      };
+
+      tubeObjects.push(object);
+    });
+
+    const newLauncherData = {
+      sid: selectedLauncherId,
+      status: tubeObjects,
+    };
+
+    const configFile = loadConfigFile();
+
+    const launcherDataIndex = configFile.findIndex(
+      (launcher) => launcher.sid === selectedLauncherId
+    );
+
+    configFile[launcherDataIndex] = newLauncherData;
+
+    setConfigFile(configFile);
+
+    saveConfigFileToDevice(configFile);
+
+    alert("נתונים נשמרו בהצלחה!");
+  } catch {
+    console.error("Failed to save new launcher data json");
+  }
+};
+
+document.querySelector(".quantity-input").addEventListener("input", (e) => {
+  if (!selectedTubeEl) return;
+  const newValue = parseInt(e.target.value);
+  if (newValue >= 50) {
+    selectedTubeEl.setAttribute("launch-count", 50);
+    e.target.value = 50;
+  } else if (newValue <= 0) {
+    selectedTubeEl.setAttribute("launch-count", 0);
+    e.target.value = 0;
+  } else {
+    selectedTubeEl.setAttribute("launch-count", newValue);
+  }
+
+  setTubeContent();
+});

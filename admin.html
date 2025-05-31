@@ -14,11 +14,14 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <script src="scripts/auth.js"></script>
     <link rel="stylesheet" href="style/GATR_Tube.css" />
     <link rel="stylesheet" href="style/natal.css" />
     <link rel="stylesheet" href="style/style.css" />
     <link rel="stylesheet" href="style/side_navbar_style.css" />
     <link rel="stylesheet" href="style/admin_page_style.css" />
+    <script src="model/tube_status.js"></script>
+    <script src="model/launcher.js"></script>
     <title>צריכות 113 - עמוד מנהל</title>
   </head>
   <body dir="rtl">
@@ -74,6 +77,8 @@
     </div>
 
     <ul class="tabs nav nav-tabs"></ul>
+
+    <div class="selected-launcher-id"></div>
 
     <div class="launcher">
       <div class="outer-circle">
@@ -185,7 +190,45 @@
       </div>
     </div>
 
+    <div class="quantity-control">
+      <button
+        class="minus"
+        onclick="decreaseQuantity()"
+        onmousedown="startDecreasing()"
+        onmouseup="stopDecreasing()"
+        onmouseleave="stopDecreasing()"
+        ontouchstart="startDecreasing()"
+        ontouchend="stopDecreasing()"
+      >
+        −
+      </button>
+      <div class="quantity-input-group">
+        <input
+          type="number"
+          class="quantity-input"
+          value="1"
+          min="0"
+          max="50"
+        />
+        <button type="button" class="btn btn-secondary" onclick="saveAction()">
+          שמור
+        </button>
+      </div>
+      <button
+        class="plus"
+        onclick="increaseQuantity()"
+        onmousedown="startIncreasing()"
+        onmouseup="stopIncreasing()"
+        onmouseleave="stopIncreasing()"
+        ontouchstart="startIncreasing()"
+        ontouchend="stopIncreasing()"
+      >
+        +
+      </button>
+    </div>
+
     <script src="scripts/side_navbar.js"></script>
     <script src="scripts/admin_page.js" defer></script>
+    <script src="scripts/utils.js"></script>
   </body>
 </html>

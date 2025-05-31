@@ -31,11 +31,6 @@
   flex: 0 0 auto; /* prevent wrapping */
 }
 
-ul.tabs {
-  width: 100%;
-  overflow: hidden;
-}
-
 .tablinks {
   padding: 10px 16px;
   font-size: 16px;
@@ -114,6 +109,13 @@ ul.tabs {
   border-bottom-right-radius: 50% !important;
 }
 
+/* Mobile override: use full width minus padding */
+@media (max-width: 600px) {
+  .outer-circle {
+    --big-radius: calc(100vw - 20px);
+  }
+}
+
 .inner-circle {
   position: relative;
   display: flex;
@@ -135,4 +137,64 @@ ul.tabs {
   text-align: center;
   font-weight: 800;
   color: black;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.quantity-control button {
+  width: 42px;
+  height: 42px;
+  font-size: 20px;
+  font-weight: 800;
+  border: none;
+  background-color: #63b0e7;
+  color: rgb(0, 0, 0);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.quantity-control button:hover {
+  background-color: #4ba7e9bb;
+}
+
+.quantity-control .quantity-input {
+  width: 150px;
+  text-align: center;
+  font-size: 16px;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.quantity-input-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantity-input-group button {
+  width: auto;
+}
+
+.tablinks.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.selected-launcher-id {
+  margin: 35px 0px 0px 0px;
+  font-size: 35px;
+  font-weight: 600;
 }

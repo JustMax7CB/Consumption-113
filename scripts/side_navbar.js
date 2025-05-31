@@ -22,7 +22,7 @@ function toggleSideNav() {
 }
 
 const  checkCredentials = async () => {
-  const adminUnlocked = localStorage.getItem("adminUnlocked");
+  const adminUnlocked = localStorage.getItem(AdminAuthKey);
 
   if (adminUnlocked === "true") {
     window.location.href = "admin.html";
@@ -37,7 +37,7 @@ const  checkCredentials = async () => {
 
     if (inputHash === STORED_HASH) {
       alert("כניסה מאושרת!");
-      localStorage.setItem("adminUnlocked", "true");
+      localStorage.setItem(AdminAuthKey, "true");
       window.location.href = "admin.html";
     } else {
       alert("סיסמה שגויה");
@@ -45,7 +45,7 @@ const  checkCredentials = async () => {
 }
 
 const adminLogout = () => {
-  localStorage.setItem("adminUnlocked", "false");
+  localStorage.setItem(AdminAuthKey, "false");
   alert("התנתקת בהצלחה!")
   location.reload();
   window.location.href = "index.html";

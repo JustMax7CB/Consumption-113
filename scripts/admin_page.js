@@ -170,15 +170,22 @@ const setTubeContent = () => {
 };
 
 let intervalId;
+let timeoutId;
 
 const startIncreasing = () => {
-  intervalId = setInterval(() => {
-    increaseQuantity();
-  }, 200); // Repeats every 200ms while held
+  // Start with slow interval
+  intervalId = setInterval(increaseQuantity, 200);
+
+  // After 2.5 seconds, switch to faster interval
+  timeoutId = setTimeout(() => {
+    clearInterval(intervalId);
+    intervalId = setInterval(increaseQuantity, 80);
+  }, 2500);
 };
 
 const stopIncreasing = () => {
   clearInterval(intervalId);
+  clearTimeout(timeoutId);
 };
 
 const increaseQuantity = () => {
@@ -199,13 +206,19 @@ const increaseQuantity = () => {
 };
 
 const startDecreasing = () => {
-  intervalId = setInterval(() => {
-    decreaseQuantity();
-  }, 200); // Repeats every 200ms while held
+  // Start with slow interval
+  intervalId = setInterval(increaseQuantity, 200);
+
+  // After 2.5 seconds, switch to faster interval
+  timeoutId = setTimeout(() => {
+    clearInterval(intervalId);
+    intervalId = setInterval(decreaseQuantity, 80);
+  }, 2500);
 };
 
 const stopDecreasing = () => {
   clearInterval(intervalId);
+  clearTimeout(timeoutId);
 };
 
 const decreaseQuantity = () => {

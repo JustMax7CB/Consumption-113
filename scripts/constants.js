@@ -44,3 +44,15 @@ const resultOptions = [
   "Missfire",
   "Hangfire",
 ];
+
+const ewColors = {
+  "706": "\u{1F533}",
+  "802": "\u{1F7EA}",
+  "206": "\u{1F7E5}",
+  "RR-180": "\u2B1B\uFE0F",
+  "RR-170": "\u2B1C\uFE0F"
+}
+
+const explosionEmoji = "\u{1F4A5}"
+const fireEmoji = "\u{1F525}"
+const rocketEmoji = "\u{1F680}"

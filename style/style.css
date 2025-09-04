@@ -98,6 +98,10 @@ input::-webkit-inner-spin-button {
     margin: 10px 0;
 }
 
+.input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+    border-radius: 6px;
+}
+
 #missile_number {
     max-width: 90px;
 }

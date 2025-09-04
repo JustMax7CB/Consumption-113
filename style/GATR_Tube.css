@@ -43,6 +43,7 @@
 .inner-circle.selected {
     background-color: rgba(153, 212, 59, 1);
     color: white;
+    box-shadow: 0 2px 3px rgba(42, 42, 42, 0.281);
 }
 
 .inner-circle.selected:before {

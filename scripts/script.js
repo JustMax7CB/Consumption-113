@@ -211,7 +211,7 @@ const createMessage = (data) => {
     if (missile.Tube !== null) {
       TubeMessagePart = `צינור #${missile.Tube}`;
     }
-    missilesMessagePart += `${explosionEmoji} ${explosionEmoji} טיל ${missile.Type} מסד ${missile.SerialNumber} ${TubeMessagePart} - ${missile.Result}\n`;
+    missilesMessagePart += `${explosionEmoji} טיל ${missile.Type} מסד ${missile.SerialNumber} ${TubeMessagePart} - ${missile.Result}\n`;
   }
 
   let cartridgeMessagePart = ``;

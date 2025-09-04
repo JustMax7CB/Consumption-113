@@ -201,7 +201,8 @@ const createMessage = (data) => {
   const heliNumberMessagePart = `מסוק ${heliNumber}`;
   let ewsMessagePart = ``;
   for (let ew of ews) {
-    ewsMessagePart += `${ew.Type} ${ew.Point} - ${ew.Quantity}\n`;
+
+    ewsMessagePart += `${ewColors[ew.Type]} ${ew.Type} ${ew.Point} - ${ew.Quantity}\n`;
   }
 
   let missilesMessagePart = ``;
@@ -210,12 +211,12 @@ const createMessage = (data) => {
     if (missile.Tube !== null) {
       TubeMessagePart = `צינור #${missile.Tube}`;
     }
-    missilesMessagePart += `טיל ${missile.Type} מסד ${missile.SerialNumber} ${TubeMessagePart} - ${missile.Result}\n`;
+    missilesMessagePart += `${explosionEmoji} ${explosionEmoji} טיל ${missile.Type} מסד ${missile.SerialNumber} ${TubeMessagePart} - ${missile.Result}\n`;
   }
 
   let cartridgeMessagePart = ``;
   for (let cartridge of cartridges) {
-    cartridgeMessagePart += `פגזים ${cartridge.Type} - ${cartridge.Quantity}\n`;
+    cartridgeMessagePart += `${fireEmoji} פגזים ${cartridge.Type} - ${cartridge.Quantity}\n`;
   }
 
   let noteMessagePart = note !== null ? note : null;

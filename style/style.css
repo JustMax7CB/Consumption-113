@@ -1,3 +1,14 @@
+@font-face {
+    font-family: "Varela";
+    src: url("../assets/fonts/VarelaRound-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+* {
+    font-family: "Varela";
+}
+
 .container {
     display: flex;
     flex-direction: column;

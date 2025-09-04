@@ -47,6 +47,12 @@ const saveData = (sendFunction) => {
   //   flightTimeInput.style.border = normalBorderStyle;
 
   const heliNumber = document.querySelector("#heli_number").value;
+
+  if (!heliNumber) {
+    alert("מספר מסוק חסר!")
+    return;
+  }
+
   const missiles = saveMissiles();
   const ews = saveEw();
   const cartridgeQuantity = saveCartridge();
@@ -84,6 +90,7 @@ const saveMessage = () => {
     flightTimeInput.style.border = normalBorderStyle;
 
     const heliNumber = document.querySelector("#heli_number").value;
+
     const missiles = saveMissiles();
     const ews = saveEw();
     const cartridgeQuantity = saveCartridge();

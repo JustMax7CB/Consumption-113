@@ -138,7 +138,7 @@ select {
 }
 
 .ew-row {
-    width: 70%;
+    width: auto;
 }
 
 #ew-quantity-input,

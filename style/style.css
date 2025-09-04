@@ -110,11 +110,14 @@ input,
 select {
     margin: 2px;
     height: 40px;
+    box-shadow: 0 1px 1px rgba(56, 56, 56, 0.3);
+    border: 1px solid #6c6c6c6c;   /* optional: soft border */
+    border-radius: 5px;       /* optional: rounded corners */
 }
 
 .boxshadow {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ddd;   /* optional: soft border */
+    box-shadow: 0 3px 4px rgba(56, 56, 56, 0.3);
+    border: 1px solid #6c6c6c6c;   /* optional: soft border */
     border-radius: 6px;       /* optional: rounded corners */
 }
 
@@ -130,15 +133,18 @@ select {
     max-width: 120px;
 }
 
+.remove-btn {
+    box-shadow: 0 3px 4px rgba(59, 59, 59, 0.3);
+    border: 1px solid #de1010dd;   /* optional: soft border */
+    border-radius: 5px;       /* optional: rounded corners */
+}
+
 .btn-primary,
 .remove-btn,
 .form-select:not(.gatr-select) {
     font-size: 14px;
     width: 8em;
     margin: 15px 5px;
-    box-shadow: 0 4px 6px rgba(42, 42, 42, 0.2);
-    border-radius: 6px;
-    border: 2px solid #5a5a5a49;
 }
 
 .ew-row {

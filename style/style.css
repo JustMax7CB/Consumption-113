@@ -147,9 +147,16 @@ select {
 }
 
 #notes {
-    width: calc(100vw - 20px);  
-    height: 100px; 
+    width: 550px;  
+    height: 150px; 
 }
+
+@media (max-width: 768px) {
+    #notes {
+        width: calc(100vw - 20px); 
+        height: 100px; 
+    }
+  }
 
 textarea {
     resize: none;

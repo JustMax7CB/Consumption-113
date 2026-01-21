@@ -1,10 +1,5 @@
-// const normalBorderStyle = flightTimeInput.style.border;
+import { SummaryReport } from "../model/summary_report.js";
 
-let loadedMessages = null;
-
-// flightTimeInput.addEventListener("input", () => flightTimeFormatter());
-
-// clearMemoryButton.addEventListener("click", () => clearMessagesFromStorage());
 
 addMissileButton.addEventListener("click", () => addMissileRow());
 
@@ -22,30 +17,8 @@ telegramShareContainer.addEventListener("click", () =>
 
 clearButton.addEventListener("click", () => clearData());
 
-// saveButton.addEventListener("click", () => saveMessage());
-
-// loadMessagesButton.addEventListener("click", () => loadMessages());
-
-let missileIndex = 0;
-let ewIndex = 0;
-let cartridgeIndex = 0;
 
 const saveData = (sendFunction) => {
-  // if (loadedMessages !== null) {
-
-  //   sendFunction(loadedMessages);
-  //   return;
-  // }
-  // if (!formValidation()) return;
-
-  // const flightDetails = saveFlightDetails();
-  // const timeValid = flightDetails !== null ? checkTime(flightDetails) : true;
-  // if (!timeValid) {
-  //   flightTimeInput.style.border = "2px solid red";
-  //   alert("זמן טיסה לא חוקי");
-  // } else {
-  //   flightTimeInput.style.border = normalBorderStyle;
-
   const heliNumber = document.querySelector("#heli_number").value;
 
   if (!heliNumber) {
@@ -55,77 +28,26 @@ const saveData = (sendFunction) => {
 
   const missiles = saveMissiles();
   const ews = saveEw();
-  const cartridgeQuantity = saveCartridge();
+  const cartridges = saveCartridge();
   const note = saveNotes();
 
+  const report = new SummaryReport(cartridges, ews, missiles);
+
   const data = {
-    // flightDetails: flightDetails,
     heliNumber: heliNumber,
-    missiles: missiles,
-    ews: ews,
-    cartridges: cartridgeQuantity,
+    report: report,
     note: note,
   };
 
   const fullMessage = createMessage(data);
-  // const savedMessages = getAllSavedMessages() + [, fullMessage];
   sendFunction(fullMessage);
 };
 
-const sendSavedMessages = (sendFunction, savedMessages) => {
-  let fullMessage = ``;
-  for (let message of savedMessages) {
-    fullMessage += `${message}\n\n`;
-  }
-  sendFunction(fullMessage);
-};
 
-const saveMessage = () => {
-  if (!formValidation()) return;
-  const timeValid = flightDetails !== null ? checkTime(flightDetails) : true;
-  if (!timeValid) {
-    flightTimeInput.style.border = "2px solid red";
-    alert("זמן טיסה לא חוקי");
-  } else {
-    flightTimeInput.style.border = normalBorderStyle;
-
-    const heliNumber = document.querySelector("#heli_number").value;
-
-    const missiles = saveMissiles();
-    const ews = saveEw();
-    const cartridgeQuantity = saveCartridge();
-    const note = saveNotes();
-
-    const data = {
-      heliNumber: heliNumber,
-      missiles: missiles,
-      ews: ews,
-      cartridges: cartridgeQuantity,
-      note: note,
-    };
-
-    const fullMessage = createMessage(data);
-    saveMessageToLocalStorage(fullMessage);
-    alert(`דיווח מסוק ${data.heliNumber} נשמר בהצלחה בזיכרון`);
-    clearData();
-  }
-};
-
-const loadMessages = () => {
-  loadedMessages = getAllSavedMessages();
-  if (
-    loadedMessages.length === 0 ||
-    loadedMessages === null ||
-    loadedMessages === undefined
-  )
-    alert("אין דיווחים בזיכרון");
-  else alert("דיווחים נטענו בהצלחה");
-};
 
 
 const saveMissiles = () => {
   let missileList = [];
-  let gatrTube = null;
 
   const missilesRows = document.querySelectorAll(".missile-row");
   for (let missileRow of missilesRows) {
@@ -134,10 +56,9 @@ const saveMissiles = () => {
     const missileResult = missileRow.querySelector(".missile-result").value;
 
     missileList.push({
-      Type: missileType,
-      SerialNumber: missileNumber,
-      Result: missileResult,
-      Tube: gatrTube,
+      type: missileType,
+      number: missileNumber,
+      result: missileResult,
     });
   }
 
@@ -148,10 +69,10 @@ const saveMissiles = () => {
     const missileNumber = gatrMissile.querySelector(".gatr-input").value;
     const missileResult = gatrMissile.querySelector(".gatr-select").value;
     missileList.push({
-      Type: missileType,
-      SerialNumber: missileNumber,
-      Result: missileResult,
-      Tube: missileTube,
+      type: missileType,
+      number: missileNumber,
+      result: missileResult,
+      tube: missileTube,
     });
   }
   return missileList;
@@ -163,12 +84,12 @@ const saveEw = () => {
   const ewRows = document.querySelectorAll(".ew-row");
   for (let ewRow of ewRows) {
     const type = ewRow.querySelector(".ew-type-select").value;
-    const point = ewRow.querySelector(".ew-point-select").value;
+    const station = ewRow.querySelector(".ew-point-select").value;
     const quantity = ewRow.querySelector(".ew-quantity-input").value;
     ewList.push({
-      Type: type,
-      Point: point,
-      Quantity: quantity,
+      type: type,
+      station: station,
+      quantity: quantity,
     });
   }
   return ewList;
@@ -184,8 +105,8 @@ const saveCartridge = () => {
     const type = row.querySelector(".cartridge-type-select").value;
     const quantity = row.querySelector(".cartridge-input").value;
     cartridgeList.push({
-      Type: type,
-      Quantity: quantity,
+      type: type,
+      quantity: quantity,
     });
   }
   return cartridgeList;
@@ -198,9 +119,9 @@ const saveNotes = () => {
 };
 
 const createMessage = (data) => {
-  const missiles = data.missiles;
-  const ews = data.ews;
-  const cartridges = data.cartridges;
+  const missiles = data.report.missiles;
+  const ews = data.report.ews;
+  const cartridges = data.report.cartridges;
   const heliNumber = data.heliNumber;
   const note = data.note;
 
@@ -209,21 +130,21 @@ const createMessage = (data) => {
   let ewsMessagePart = ``;
   for (let ew of ews) {
 
-    ewsMessagePart += `${ewColors[ew.Type]} ${ew.Type} ${ew.Point} - ${ew.Quantity}\n`;
+    ewsMessagePart += `${ewColors[ew.type]} ${ew.type} ${ew.station} - ${ew.quantity}\n`;
   }
 
   let missilesMessagePart = ``;
-  let TubeMessagePart = ``;
+  let tubeMessagePart = ``;
   for (let missile of missiles) {
-    if (missile.Tube !== null) {
-      TubeMessagePart = `צינור #${missile.Tube}`;
+    if (missile.tube) {
+      tubeMessagePart = `צינור #${missile.tube}`;
     }
-    missilesMessagePart += `${explosionEmoji} טיל ${missile.Type} מסד ${missile.SerialNumber} ${TubeMessagePart} - ${missile.Result}\n`;
+    missilesMessagePart += `${explosionEmoji} טיל ${missile.type} מסד ${missile.number} ${tubeMessagePart} - ${missile.result}\n`;
   }
 
   let cartridgeMessagePart = ``;
   for (let cartridge of cartridges) {
-    cartridgeMessagePart += `${fireEmoji} פגזים ${cartridge.Type} - ${cartridge.Quantity}\n`;
+    cartridgeMessagePart += `${fireEmoji} פגזים ${cartridge.type} - ${cartridge.quantity}\n`;
   }
 
   let noteMessagePart = note !== null ? note : null;
@@ -250,19 +171,6 @@ const sendToTelegram = (fullMessage) => {
   window.open(`tg://msg?text=${message}`);
 };
 
-const removeElement = (className, index) => {
-  const query = `.${className}[index="${index}"]`;
-
-  console.log(`Remove Element query: ${query}`);
-  const element = document.querySelector(query);
-
-  if (element) {
-    element.remove();
-  } else {
-    console.error("Element not found");
-  }
-};
-
 const clearData = () => {
   const elements = document.querySelectorAll("input, textarea");
   for (let element of elements) {
@@ -280,16 +188,8 @@ const clearData = () => {
   }
 
   const gatrMissiles = document.querySelectorAll(".gatr-row");
-for (let row of gatrMissiles) {
-  row.remove();
-}
+  for (let row of gatrMissiles) {
+    row.remove();
+  }
 };
 
-const formValidation = () => {
-  const heliNumber = document.querySelector("#heli_number").value;
-  if (heliNumber === "" || heliNumber === null || heliNumber === undefined) {
-    alert("חובה לציין מספר מסוק");
-    return false;
-  }
-  return true;
-};

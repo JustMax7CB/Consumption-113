@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>דוחות צריכה</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/side_navbar_style.css">
+    <script src="../scripts/auth.js"></script>
+</head>
+
+<body dir="rtl">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleSideNav()">&times;</a>
+        <a href="../index.html">דף הבית</a>
+        <a href="reports.html">דוחות</a>
+        <div class="admin-logout">
+            <a href="#" onclick="checkCredentials()">עמוד מנהל</a>
+            <button type="button" class="btn btn-outline-info" id="logoutBtn" onclick="adminLogout()">התנתק</button>
+        </div>
+    </div>
+
+    <div class="hamburger" onclick="toggleSideNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <h1>דוחות צריכה</h1>
+
+    <div class="container">
+        <button id="fetch_reports_btn" class="btn btn-primary mb-3">טען דוחות</button>
+
+        <div id="reports_container">
+            <!-- Reports will be loaded here -->
+        </div>
+    </div>
+
+    <script src="../scripts/side_navbar.js"></script>
+    <script type="module" src="../scripts/reports.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+{
+    "name": "secure-log-app",
+    "type": "module",
+    "private": true
+  }
+  

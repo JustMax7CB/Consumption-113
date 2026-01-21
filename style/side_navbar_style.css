@@ -64,4 +64,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
 }

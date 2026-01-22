@@ -3,7 +3,7 @@ import { SummaryReport } from "../model/summary_report.js";
 const fetchReportsBtn = document.querySelector("#fetch_reports_btn");
 const reportsContainer = document.querySelector("#reports_container");
 
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 const REPORTS_PER_PAGE = 10;
 
 let allReports = [];

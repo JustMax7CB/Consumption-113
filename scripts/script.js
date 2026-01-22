@@ -18,13 +18,11 @@ telegramShareContainer.addEventListener("click", () =>
 clearButton.addEventListener("click", () => clearData());
 
 
+
 const saveData = (sendFunction) => {
+  if (!formValidation()) return;
   const heliNumber = document.querySelector("#heli_number").value;
 
-  if (!heliNumber) {
-    alert("מספר מסוק חסר!")
-    return;
-  }
 
   const missiles = saveMissiles();
   const ews = saveEw();
@@ -171,6 +169,7 @@ const sendToTelegram = (fullMessage) => {
   window.open(`tg://msg?text=${message}`);
 };
 
+
 const clearData = () => {
   const elements = document.querySelectorAll("input, textarea");
   for (let element of elements) {
@@ -193,3 +192,11 @@ const clearData = () => {
   }
 };
 
+const formValidation = () => {
+  const heliNumber = document.querySelector("#heli_number").value;
+  if (heliNumber === "" || heliNumber === null || heliNumber === undefined) {
+    alert("חובה לציין מספר מסוק");
+    return false;
+  }
+  return true;
+}

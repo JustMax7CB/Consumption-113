@@ -1,3 +1,20 @@
+let missileIndex = 0;
+let ewIndex = 0;
+let cartridgeIndex = 0;
+
+const removeElement = (className, index) => {
+  const query = `.${className}[index="${index}"]`;
+
+  console.log(`Remove Element query: ${query}`);
+  const element = document.querySelector(query);
+
+  if (element) {
+    element.remove();
+  } else {
+    console.error("Element not found");
+  }
+};
+
 const addEwRow = () => {
   const EwContainer = document.querySelector(".ew-container");
 

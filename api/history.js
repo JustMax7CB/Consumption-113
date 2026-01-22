@@ -1,8 +1,27 @@
-import { decryptObject } from "../lib/crypto.js";
-import { getFile } from "../lib/github.js";
-
 export default async function handler(req, res) {
   console.log("history handler: Request received", req.method);
+
+  let decryptObject, getFile;
+
+  try {
+    console.log("history handler: Loading crypto.js...");
+    const cryptoModule = await import("../lib/crypto.js");
+    decryptObject = cryptoModule.decryptObject;
+    console.log("history handler: crypto.js loaded");
+  } catch (err) {
+    console.error("history handler: Failed to load crypto.js:", err.message, err.stack);
+    return res.status(500).json({ error: "Failed to load crypto module", details: err.message });
+  }
+
+  try {
+    console.log("history handler: Loading github.js...");
+    const githubModule = await import("../lib/github.js");
+    getFile = githubModule.getFile;
+    console.log("history handler: github.js loaded");
+  } catch (err) {
+    console.error("history handler: Failed to load github.js:", err.message, err.stack);
+    return res.status(500).json({ error: "Failed to load github module", details: err.message });
+  }
 
   if (req.method !== "GET") {
     console.log("history handler: Method not allowed");

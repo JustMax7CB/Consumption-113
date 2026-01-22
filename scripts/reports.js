@@ -59,13 +59,19 @@ const fetchReports = async () => {
             await new Promise(resolve => setTimeout(resolve, 1000));
             rows = mockData;
         } else {
+            console.log("fetchReports: Calling /api/history...");
             const response = await fetch("/api/history");
 
+            console.log("fetchReports: Response status:", response.status);
+
             if (!response.ok) {
-                throw new Error("Failed to fetch reports");
+                const errorData = await response.json().catch(() => ({}));
+                console.error("fetchReports: API error response:", errorData);
+                throw new Error(errorData.details || errorData.error || `HTTP ${response.status}`);
             }
 
             rows = await response.json();
+            console.log("fetchReports: Received", rows.length, "rows");
         }
 
         allReports = rows;
@@ -73,8 +79,12 @@ const fetchReports = async () => {
         displayReports();
         fetchReportsBtn.style.display = "none";
     } catch (error) {
-        console.error("Error fetching reports:", error);
-        reportsContainer.innerHTML = `<div class="alert alert-danger">שגיאה בטעינת הדוחות</div>`;
+        console.error("fetchReports: Error:", error.message);
+        reportsContainer.innerHTML = `
+            <div class="alert alert-danger">
+                <strong>שגיאה בטעינת הדוחות</strong>
+                <br><small>${error.message}</small>
+            </div>`;
         fetchReportsBtn.disabled = false;
         fetchReportsBtn.innerHTML = "טען דוחות";
     }

@@ -4,36 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
     <title>צריכות 113</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="style/GATR_Tube.css">
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/GATR_Tube.css" />
+    <link rel="stylesheet" href="style/natal.css" />
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/side_navbar_style.css">
+    <script src="scripts/auth.js"></script>
 </head>
 
 <body dir="rtl">
-    <!-- <nav class="nav justify-content-center nav-pill">
-        <a href="../../index.html">דיווח חדש</a>
-        <a href="saved_messages.html">דיווחים שמורים</a>
-    </nav> -->
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleSideNav()">&times;</a>
+        <a href="index.html">דף הבית</a>
+        <a href="pages/reports.html" style="display: none;">דוחות</a>
+        <div class="admin-logout">
+            <a href="#" onclick="checkCredentials()">עמוד מנהל</a>
+            <button type="button" class="btn btn-outline-info" id="logoutBtn" onclick="adminLogout()">התנתק</button>
+        </div>
+      </div>
+
+      <div class="hamburger" onclick="toggleSideNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    
     <h1>🐝 דיווחי הצרעה 🐝</h1>
 
     <div class="heli-container container input-group mb-3">
         <input id="heli_number" class="form-control" type="number" inputmode="numeric" placeholder="מספר מסוק">
     </div>
 
-    <div class="flight-details">
-        <input id="pilot_name" class="form-control" type="text" placeholder="שם טייס" />
-        <!-- <input id="flight_time" maxlength="5" type="text" placeholder="שעות טיסה"> -->
-    </div>
-
     <h3>טילים</h4>
         <div class="missile-container container input-group mb-3">
-            <button id="add_missile_btn" class="btn btn-primary" type="button">הוסף טיל</button>
+        
+            <button id="add_missile_btn" class="btn btn-primary boxshadow" type="button">הוסף טיל</button>
 
-
-            <h6>בחירת טילי פיגיון</h2>
+            <h6>בחירת טילי פיגיון</h6>
                 <div class="outer-circle">
                     <div class="row-1 row">
                         <div class="inner-circle inner-circle-10" data-tube="11"></div>
@@ -68,7 +81,6 @@
                         <div class="inner-circle inner-circle-19" data-tube="18"></div>
 
                     </div>
-
                 </div>
                 <div id="gatr_inputs">
 
@@ -79,16 +91,16 @@
 
         <h3>מוץ/נורים</h4>
             <div class="ew-container container input-group">
-                <button id="ew_btn" class="btn btn-primary" type="button">הוסף מוץ/נורים</button>
+                <button id="ew_btn" class="btn btn-primary boxshadow" type="button">הוסף מוץ/נורים</button>
             </div>
 
             <h3>פגזים</h4>
                 <div class="cartridges-container container">
-                    <button id="cartridge_btn" class="btn btn-primary" type="button">הוסף פגזים</button>
+                    <button id="cartridge_btn" class="btn btn-primary boxshadow" type="button">הוסף פגזים</button>
                 </div>
 
                 <div class="notes-container">
-                    <textarea class="form-control" id="notes" placeholder="הערות"></textarea>
+                    <textarea class="form-control boxshadow" id="notes" placeholder="הערות"></textarea>
                 </div>
 
                 <div class="share-container">
@@ -103,11 +115,7 @@
                         <label>שיתוף ל Telegram</label>
                     </div>
                 </div>
-                <!-- <div class="storage-container">
-        <button id="save_messages_btn" type="button" class="btn btn-info">שמור דיווח</button>
-        <button id="load_messages_btn" type="button" class="btn btn-info">טען דיווחים</button>
-
-    </div> -->
+               
 
                 <button id="clear_btn" type="button" class="btn btn-secondary">איפוס נתונים</button>
 
@@ -119,8 +127,9 @@
                 <script src="scripts/utils.js"></script>
                 <script src="scripts/localStorageHandler.js"></script>
                 <script src="scripts/constants.js"></script>
-                <script src="scripts/script.js"></script>
+                <script type="module" src="scripts/script.js"></script>
                 <script src="scripts/gatr.js"></script>
+                <script src="scripts/side_navbar.js"></script>
 </body>
 
 </html>

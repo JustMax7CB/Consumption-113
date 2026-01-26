@@ -59,9 +59,17 @@ const mockData = generateMockData();
 
 fetchReportsBtn.addEventListener("click", () => fetchReports());
 
-const fetchReports = async () => {
+const enableLoading = () => {
     fetchReportsBtn.disabled = true;
-    fetchReportsBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status"></span> טוען...`;
+    fetchReportsBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status"></span> טוען...`
+};
+const disableLoading = () => {
+    fetchReportsBtn.style.display = "none";
+    fetchReportsBtn.innerHTML = ``
+}
+
+const fetchReports = async () => {
+    enableLoading();
     reportsContainer.innerHTML = "";
 
     try {
@@ -101,7 +109,7 @@ const fetchReports = async () => {
         allReports = rows;
         currentPage = 1;
         displayReports();
-        fetchReportsBtn.style.display = "none";
+        disableLoading();
     } catch (error) {
         console.error("fetchReports: Error:", error.message);
         reportsContainer.innerHTML = `
@@ -183,16 +191,16 @@ const createReportCard = (heliNumber, report, note, timestamp) => {
     const date = new Date(timestamp).toLocaleString("he-IL");
 
     let missilesHtml = report.missiles.map(m =>
-        `${m.type} #${m.number}${m.tube ? ` (צינור ${m.tube})` : ""} - ${m.result}`
-    ).join(", ");
+        `<li>${m.type} #${m.number}${m.tube ? ` (צינור ${m.tube})` : ""} - ${m.result}</li>`
+    );
 
     let ewsHtml = report.ews.map(e =>
-        `${e.type} ${e.station}: ${e.quantity}`
-    ).join(", ");
+        `<li>${e.type} ${e.station}: ${e.quantity}</li>`
+    );
 
     let cartridgesHtml = report.cartridges.map(c =>
-        `${c.type}: ${c.quantity}`
-    ).join(", ");
+        `<li>${c.type}: ${c.quantity}</li>`
+    );
 
     card.innerHTML = `
         <div class="card-header py-2 d-flex justify-content-between align-items-center">
@@ -200,9 +208,9 @@ const createReportCard = (heliNumber, report, note, timestamp) => {
             <small class="text-muted">${date}</small>
         </div>
         <div class="card-body py-2" style="font-size: 0.9rem;">
-            ${missilesHtml ? `<div><strong>טילים:</strong> ${missilesHtml}</div>` : ""}
-            ${ewsHtml ? `<div><strong>מוץ/נורים:</strong> ${ewsHtml}</div>` : ""}
-            ${cartridgesHtml ? `<div><strong>פגזים:</strong> ${cartridgesHtml}</div>` : ""}
+            <ul>${missilesHtml ? `<div><strong>טילים:</strong> ${missilesHtml}</div>` : ""}</ul>
+            <ul>${ewsHtml ? `<div><strong>מוץ/נורים:</strong> ${ewsHtml}</div>` : ""}</ul>
+            <ul>${cartridgesHtml ? `<div><strong>פגזים:</strong> ${cartridgesHtml}</div>` : ""}</ul>
             ${note ? `<div><strong>הערות:</strong> ${note}</div>` : ""}
         </div>
     `;

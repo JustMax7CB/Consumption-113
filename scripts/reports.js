@@ -45,7 +45,8 @@ const generateMockData = () => {
                         { type: ewTypes[i % 2], station: stations[i % 2], quantity: Math.floor(Math.random() * 8) + 2 }
                     ],
                     missiles: [
-                        { type: missileTypes[i % 3], number: String(10000 + i), result: results[i % 2] }
+                        { type: missileTypes[i % 3], number: String(10000 + i), result: results[i % 2] },
+                        { type: missileTypes[i % 3], number: String(10000 + i), result: results[i % 2] },
                     ]
                 },
                 note: i % 3 === 0 ? "הערה לדוגמה" : ""
@@ -192,15 +193,15 @@ const createReportCard = (heliNumber, report, note, timestamp) => {
 
     let missilesHtml = report.missiles.map(m =>
         `<li>${m.type} #${m.number}${m.tube ? ` (צינור ${m.tube})` : ""} - ${m.result}</li>`
-    );
+    ).join("");
 
     let ewsHtml = report.ews.map(e =>
         `<li>${e.type} ${e.station}: ${e.quantity}</li>`
-    );
+    ).join("");
 
     let cartridgesHtml = report.cartridges.map(c =>
         `<li>${c.type}: ${c.quantity}</li>`
-    );
+    ).join("");
 
     card.innerHTML = `
         <div class="card-header py-2 d-flex justify-content-between align-items-center">

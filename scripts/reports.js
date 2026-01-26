@@ -5,9 +5,21 @@ const reportsContainer = document.querySelector("#reports_container");
 
 const USE_MOCK_DATA = false;
 const REPORTS_PER_PAGE = 10;
+const CACHE_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
+const CACHE_TIMESTAMP_KEY = "reports_cache_timestamp";
 
 let allReports = [];
 let currentPage = 1;
+
+const isCacheExpired = () => {
+    const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+    if (!timestamp) return true;
+    return Date.now() - parseInt(timestamp) > CACHE_EXPIRY_MS;
+};
+
+const updateCacheTimestamp = () => {
+    localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
+};
 
 const generateMockData = () => {
     const data = [];
@@ -59,19 +71,31 @@ const fetchReports = async () => {
             await new Promise(resolve => setTimeout(resolve, 1000));
             rows = mockData;
         } else {
-            console.log("fetchReports: Calling /api/history...");
-            const response = await fetch("/api/history");
+            // Check cache first
+            const cachedReports = loadEncryptedReports();
 
-            console.log("fetchReports: Response status:", response.status);
+            if (cachedReports && cachedReports.length > 0 && !isCacheExpired()) {
+                console.log("fetchReports: Using cached data,", cachedReports.length, "reports");
+                rows = cachedReports;
+            } else {
+                console.log("fetchReports: Cache empty or expired, calling /api/history...");
+                const response = await fetch("/api/history");
 
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                console.error("fetchReports: API error response:", errorData);
-                throw new Error(errorData.details || errorData.error || `HTTP ${response.status}`);
+                console.log("fetchReports: Response status:", response.status);
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error("fetchReports: API error response:", errorData);
+                    throw new Error(errorData.details || errorData.error || `HTTP ${response.status}`);
+                }
+
+                rows = await response.json();
+                console.log("fetchReports: Received", rows.length, "rows from API");
+
+                // Save to cache
+                saveEncryptedReport(rows);
+                updateCacheTimestamp();
             }
-
-            rows = await response.json();
-            console.log("fetchReports: Received", rows.length, "rows");
         }
 
         allReports = rows;

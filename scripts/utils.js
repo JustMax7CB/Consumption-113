@@ -68,3 +68,61 @@ const getElementByClass = (className) => {
 };
 
 const refresh = () => location.reload(true);
+
+// Encrypted reports cache helpers
+const REPORTS_CACHE_KEY = "encrypted_reports_cache";
+
+const saveEncryptedReport = (encryptedReports) => {
+  try {
+    const existing = loadEncryptedReports();
+
+    let reportsToSave;
+    if (existing && existing.length > 0) {
+      // Get existing timestamps to check for duplicates
+      const existingTimestamps = new Set(existing.map(r => r.ts));
+
+      // Filter out duplicates from new reports
+      const newReports = encryptedReports.filter(r => !existingTimestamps.has(r.ts));
+
+      if (newReports.length > 0) {
+        reportsToSave = [...existing, ...newReports];
+        console.log("saveEncryptedReports: Appending", newReports.length, "new reports to existing", existing.length);
+      } else {
+        console.log("saveEncryptedReports: No new reports to add");
+        return true;
+      }
+    } else {
+      reportsToSave = encryptedReports;
+      console.log("saveEncryptedReports: Saving", reportsToSave.length, "reports (no existing cache)");
+    }
+
+    localStorage.setItem(REPORTS_CACHE_KEY, JSON.stringify(reportsToSave));
+    console.log("saveEncryptedReports: Total saved:", reportsToSave.length, "encrypted reports");
+    return true;
+  } catch (error) {
+    console.error("saveEncryptedReports: Failed to save:", error.message);
+    return false;
+  }
+};
+
+const loadEncryptedReports = () => {
+  try {
+    const cached = localStorage.getItem(REPORTS_CACHE_KEY);
+    if (!cached) {
+      console.log("loadEncryptedReports: No cache found");
+      return null;
+    }
+    const reports = JSON.parse(cached);
+    console.log("loadEncryptedReports: Loaded", reports.length, "encrypted reports");
+    return reports;
+  } catch (error) {
+    console.error("loadEncryptedReports: Failed to load:", error.message);
+    return null;
+  }
+};
+
+const clearEncryptedReports = () => {
+  localStorage.removeItem(REPORTS_CACHE_KEY);
+  console.log("clearEncryptedReports: Cache cleared");
+};
+

@@ -3,13 +3,15 @@ import { SummaryReport } from "../model/summary_report.js";
 const fetchReportsBtn = document.querySelector("#fetch_reports_btn");
 const reportsContainer = document.querySelector("#reports_container");
 
-const USE_MOCK_DATA = false;
+const USE_MOCK_DATA = true;
 const REPORTS_PER_PAGE = 10;
 const CACHE_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
 const CACHE_TIMESTAMP_KEY = "reports_cache_timestamp";
 
 let allReports = [];
+let filteredReports = [];
 let currentPage = 1;
+let filterHeliNumber = "";
 
 const isCacheExpired = () => {
     const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
@@ -19,6 +21,144 @@ const isCacheExpired = () => {
 
 const updateCacheTimestamp = () => {
     localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
+};
+
+const getUniqueHeliNumbers = () => {
+    const heliNumbers = allReports.map(r => r.data.heliNumber);
+    return [...new Set(heliNumbers)].sort();
+};
+
+const createFilterUI = () => {
+    const existingFilter = document.querySelector("#filter_container");
+    if (existingFilter) existingFilter.remove();
+
+    const heliNumbers = getUniqueHeliNumbers();
+
+    const filterContainer = document.createElement("div");
+    filterContainer.id = "filter_container";
+    filterContainer.className = "mb-3";
+    filterContainer.innerHTML = `
+        <div class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label for="heli_filter" class="col-form-label">סינון לפי מסוק:</label>
+            </div>
+            <div class="col-auto">
+                <select id="heli_filter" class="form-select form-select-sm">
+                    <option value="">הכל</option>
+                    ${heliNumbers.map(num => `<option value="${num}">${num}</option>`).join('')}
+                </select>
+            </div>
+        </div>
+    `;
+
+    reportsContainer.parentElement.insertBefore(filterContainer, reportsContainer);
+
+    document.querySelector("#heli_filter").addEventListener("change", (e) => {
+        filterHeliNumber = e.target.value;
+        currentPage = 1;
+        applyFilters();
+        displayReports();
+    });
+};
+
+const applyFilters = () => {
+    filteredReports = allReports.filter(report => {
+        if (filterHeliNumber && report.data.heliNumber !== filterHeliNumber) {
+            return false;
+        }
+        return true;
+    });
+};
+
+const calculateStatistics = () => {
+    const stats = {
+        totalReports: filteredReports.length,
+        totalMissiles: 0,
+        missilesByType: {},
+        missilesByResult: {},
+        totalEw: 0,
+        ewByType: {},
+        totalCartridges: 0,
+        cartridgesByType: {}
+    };
+
+    for (const row of filteredReports) {
+        const { report } = row.data;
+
+        // Missiles
+        for (const missile of report.missiles) {
+            stats.totalMissiles++;
+            stats.missilesByType[missile.type] = (stats.missilesByType[missile.type] || 0) + 1;
+            stats.missilesByResult[missile.result] = (stats.missilesByResult[missile.result] || 0) + 1;
+        }
+
+        // EW
+        for (const ew of report.ews) {
+            const qty = parseInt(ew.quantity) || 0;
+            stats.totalEw += qty;
+            stats.ewByType[ew.type] = (stats.ewByType[ew.type] || 0) + qty;
+        }
+
+        // Cartridges
+        for (const cartridge of report.cartridges) {
+            const qty = parseInt(cartridge.quantity) || 0;
+            stats.totalCartridges += qty;
+            stats.cartridgesByType[cartridge.type] = (stats.cartridgesByType[cartridge.type] || 0) + qty;
+        }
+    }
+
+    return stats;
+};
+
+const createStatisticsCard = () => {
+    if (!filterHeliNumber) return null;
+
+    const stats = calculateStatistics();
+
+    const card = document.createElement("div");
+    card.className = "card mb-4 border-primary";
+    card.id = "statistics_card";
+    card.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+
+    const missilesByTypeHtml = Object.entries(stats.missilesByType)
+        .map(([type, count]) => `<span class="badge bg-secondary me-2 fs-6">${type}: ${count}</span>`)
+        .join("");
+
+    const missilesByResultHtml = Object.entries(stats.missilesByResult)
+        .map(([result, count]) => `<span class="badge ${result === 'פגיעה' ? 'bg-success' : 'bg-danger'} me-2 fs-6">${result}: ${count}</span>`)
+        .join("");
+
+    const ewByTypeHtml = Object.entries(stats.ewByType)
+        .map(([type, count]) => `<span class="badge bg-info me-2 fs-6">${type}: ${count}</span>`)
+        .join("");
+
+    const cartridgesByTypeHtml = Object.entries(stats.cartridgesByType)
+        .map(([type, count]) => `<span class="badge bg-warning text-dark me-2 fs-6">${type}: ${count}</span>`)
+        .join("");
+
+    card.innerHTML = `
+        <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0">סיכום מסוק ${filterHeliNumber}</h4>
+        </div>
+        <div class="card-body py-4" style="font-size: 1.1rem;">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="mb-2"><strong>סה"כ דוחות:</strong> <span class="fs-4">${stats.totalReports}</span></div>
+                    <div class="mb-2"><strong>סה"כ טילים:</strong> <span class="fs-4">${stats.totalMissiles}</span></div>
+                    <div class="mb-2">${missilesByTypeHtml}</div>
+                    <div>${missilesByResultHtml}</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="mb-2"><strong>סה"כ מוץ/נורים:</strong> <span class="fs-4">${stats.totalEw}</span></div>
+                    <div class="mb-2">${ewByTypeHtml}</div>
+                    <div class="mb-2"><strong>סה"כ פגזים:</strong> <span class="fs-4">${stats.totalCartridges}</span></div>
+                    <div>${cartridgesByTypeHtml}</div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    return card;
 };
 
 const generateMockData = () => {
@@ -109,6 +249,8 @@ const fetchReports = async () => {
 
         allReports = rows;
         currentPage = 1;
+        applyFilters();
+        createFilterUI();
         displayReports();
         disableLoading();
     } catch (error) {
@@ -126,15 +268,21 @@ const fetchReports = async () => {
 const displayReports = () => {
     reportsContainer.innerHTML = "";
 
-    if (!allReports || allReports.length === 0) {
+    if (!filteredReports || filteredReports.length === 0) {
         reportsContainer.innerHTML = `<div class="alert alert-info">אין דוחות להצגה</div>`;
         return;
     }
 
-    const totalPages = Math.ceil(allReports.length / REPORTS_PER_PAGE);
+    // Add statistics card if filtering by heli number
+    const statsCard = createStatisticsCard();
+    if (statsCard) {
+        reportsContainer.appendChild(statsCard);
+    }
+
+    const totalPages = Math.ceil(filteredReports.length / REPORTS_PER_PAGE);
     const startIndex = (currentPage - 1) * REPORTS_PER_PAGE;
     const endIndex = startIndex + REPORTS_PER_PAGE;
-    const pageReports = allReports.slice(startIndex, endIndex);
+    const pageReports = filteredReports.slice(startIndex, endIndex);
 
     for (const row of pageReports) {
         const { ts, data } = row;

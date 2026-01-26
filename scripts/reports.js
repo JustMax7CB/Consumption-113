@@ -1,5 +1,4 @@
 import { SummaryReport } from "../model/summary_report.js";
-import "./utils.js";
 
 const fetchReportsBtn = document.querySelector("#fetch_reports_btn");
 const reportsContainer = document.querySelector("#reports_container");

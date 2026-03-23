@@ -1,3 +1,7 @@
+const maxCartrigesRows = 2;
+const maxEwRows = 6;
+const maxMissileRows = 16;
+
 let missileIndex = 0;
 let ewIndex = 0;
 let cartridgeIndex = 0;
@@ -10,6 +14,18 @@ const removeElement = (className, index) => {
 
   if (element) {
     element.remove();
+    if (className === "ew-row") {
+      addEwButton.disabled = false;
+      addEwButton.style.display = "block";
+    }
+    if (className === "missile-row") {
+      addMissileButton.disabled = false;
+      addMissileButton.style.disply = "block";
+    }
+    if (className === "cartridge-row") {
+      addCartridgeButton.disabled = false;
+      addCartridgeButton.style.display = "block";
+    }
   } else {
     console.error("Element not found");
   }
@@ -18,7 +34,7 @@ const removeElement = (className, index) => {
 const addEwRow = () => {
   const EwContainer = document.querySelector(".ew-container");
 
-  const ewRows = document.querySelectorAll(".ew-row");
+  var ewRows = document.querySelectorAll(".ew-row");
   if (ewRows.length === 6) return;
 
   const currentIndex = ewIndex++;
@@ -67,12 +83,18 @@ const addEwRow = () => {
   ewRow.appendChild(removeButton);
 
   EwContainer.insertBefore(ewRow, addEwButton);
+
+  ewRows = document.querySelectorAll(".ew-row");
+  if (ewRows.length === maxEwRows) {
+    addEwButton.disabled = true;
+    addEwButton.style.display = "none";
+  }
 };
 
 const addMissileRow = () => {
   let missilesContainer = document.querySelector(".missile-container");
 
-  const missileRows = document.querySelectorAll(".missile-row");
+  var missileRows = document.querySelectorAll(".missile-row");
   if (missileRows.length === 7) return;
 
   const currentIndex = missileIndex++;
@@ -121,12 +143,18 @@ const addMissileRow = () => {
   missileRow.appendChild(removeButton);
 
   missilesContainer.insertBefore(missileRow, addMissileButton);
+
+  missileRows = document.querySelectorAll(".missile-row");
+  if (missileRows.length === maxMissileRows) {
+    addMissileButton.disabled = true;
+    addMissileButton.style.display = "none";
+  }
 };
 
 const addCartridgeRow = () => {
   var CartridgesContainer = document.querySelector(".cartridges-container");
 
-  const cartridgeRows = document.querySelectorAll(".cartridge-row");
+  var cartridgeRows = document.querySelectorAll(".cartridge-row");
   if (cartridgeRows.length === 2) return;
 
   const currentIndex = cartridgeIndex++;
@@ -164,4 +192,10 @@ const addCartridgeRow = () => {
   cartridgeRow.appendChild(removeButton);
 
   CartridgesContainer.insertBefore(cartridgeRow, addCartridgeButton);
+
+  cartridgeRows = document.querySelectorAll(".cartridge-row");
+  if (cartridgeRows.length === maxCartrigesRows) {
+    addCartridgeButton.disabled = true;
+    addCartridgeButton.style.display = "none";
+  }
 };

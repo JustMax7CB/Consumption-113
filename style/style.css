@@ -203,6 +203,22 @@ textarea {
     cursor: pointer;
     box-shadow: 0 2px 2px rgba(73, 73, 73, 0.281);
     border-radius: 6px;
+ /* NEW */
+ transition: all 0.2s ease;
+}
+
+/* Hover effect */
+#whatsapp-container:hover,
+#telegram-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(73, 73, 73, 0.25);
+}
+
+/* Press (click) effect */
+#whatsapp-container:active,
+#telegram-container:active {
+    transform: translateY(1px) scale(0.97);
+    box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
 }
 
 #clear_btn,
@@ -210,4 +226,10 @@ textarea {
     margin: 10px 20px 50px 20px;
     box-shadow: 0 4px 6px rgba(42, 42, 42, 0.281);
     border-radius: 6px;
+}
+
+@media screen and (max-width: 530px) {
+    .btn-primary, .remove-btn, .form-select:not(.gatr-select), .remove-btn  {
+        margin: 5px 5px;
+    }
 }

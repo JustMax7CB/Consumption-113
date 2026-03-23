@@ -31,12 +31,6 @@
         border-color 0.2s;
 }
 
-/* Hover */
-.inner-circle:hover {
-    background-color: rgb(161, 161, 161);
-    color: white;
-}
-
 .row {
     display: flex;
     align-items: center;

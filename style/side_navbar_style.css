@@ -34,30 +34,35 @@
   left: 0;
 }
 
-/* Hamburger styling */
+/* Hamburger */
 .hamburger {
-  position: absolute;
-  top: 20px;
-  left: 20px;
   width: 30px;
   height: 22px;
   cursor: pointer;
-  z-index: 1001;
-  transition: opacity 0.4s ease;
-}
 
-.hamburger.hidden {
-  opacity: 0;
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px;
+  border-radius: 8px;
+  background-color: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1001;
 }
 
 .hamburger span {
   display: block;
   height: 4px;
-  margin: 4px 0;
-  background: #333;
+  background: white;
   border-radius: 2px;
 }
+
+/* Hide when sidenav open */
+.sidenav.open ~ .appbar .hamburger {
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 .admin-logout {
   display: flex;

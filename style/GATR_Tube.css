@@ -37,12 +37,6 @@
     color: white;
 }
 
-/* Press */
-.inner-circle:active {
-    transform: scale(0.88);
-    background-color: rgb(161, 161, 161);
-}
-
 .row {
     display: flex;
     align-items: center;

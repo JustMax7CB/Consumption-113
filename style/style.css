@@ -214,12 +214,6 @@ textarea {
     box-shadow: 0 6px 12px rgba(73, 73, 73, 0.25);
 }
 
-/* Press (click) effect */
-#whatsapp-container:active,
-#telegram-container:active {
-    transform: translateY(1px) scale(0.97);
-    box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
-}
 
 #clear_btn,
 #clear_memory_btn {
@@ -231,5 +225,9 @@ textarea {
 @media screen and (max-width: 530px) {
     .btn-primary, .remove-btn, .form-select:not(.gatr-select), .remove-btn  {
         margin: 5px 5px;
+    }
+
+    #ew_btn, #cartridge_btn, #add_missile_btn {
+        margin: 5px 0px 15px 0px;
     }
 }

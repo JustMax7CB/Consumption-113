@@ -19,7 +19,7 @@ clearButton.addEventListener("click", () => clearData());
 
 
 
-const saveData = (sendFunction) => {
+const saveData = async (sendFunction) => {
   if (!formValidation()) return;
   const heliNumber = document.querySelector("#heli_number").value;
 
@@ -37,8 +37,41 @@ const saveData = (sendFunction) => {
     note: note,
   };
 
+  const submitted = await submitToServer(data);
+  if (!submitted) return;
+
   const fullMessage = createMessage(data);
   sendFunction(fullMessage);
+};
+
+const submitToServer = async (data) => {
+  console.log("submitToServer: Submitting data...", data);
+
+  try {
+    const response = await fetch("/api/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    console.log("submitToServer: Response status:", response.status);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("submitToServer: API error:", errorData);
+      alert(`שגיאה בשמירת הנתונים: ${errorData.error || response.status}`);
+      return false;
+    }
+
+    console.log("submitToServer: Data saved successfully");
+    return true;
+  } catch (error) {
+    console.error("submitToServer: Error:", error.message);
+    alert(`שגיאה בשמירת הנתונים: ${error.message}`);
+    return false;
+  }
 };
 
 

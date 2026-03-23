@@ -24,7 +24,23 @@
     height: calc(var(--big-radius) / 7);
     border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    transition: 
+        background-color 0.2s,
+        color 0.2s,
+        transform 0.1s,
+        border-color 0.2s;
+}
+
+/* Hover */
+.inner-circle:hover {
+    background-color: rgb(161, 161, 161);
+    color: white;
+}
+
+/* Press */
+.inner-circle:active {
+    transform: scale(0.88);
+    background-color: rgb(161, 161, 161);
 }
 
 .row {

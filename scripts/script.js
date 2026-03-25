@@ -37,8 +37,8 @@ const saveData = async (sendFunction) => {
     note: note,
   };
 
-  const submitted = await submitToServer(data);
-  if (!submitted) return;
+  // const submitted = await submitToServer(data);
+  // if (!submitted) return;
 
   const fullMessage = createMessage(data);
   sendFunction(fullMessage);

@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" 
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
     <title>צריכות 113</title>
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
@@ -20,6 +19,7 @@
     <link rel="stylesheet" href="style/natal.css" />
     <link rel="stylesheet" href="style/style.css" />
     <link rel="stylesheet" href="style/side_navbar_style.css">
+    <link rel="stylesheet" href="style/location_switch_style.css">
     <script src="scripts/auth.js"></script>
 </head>
 
@@ -33,33 +33,52 @@
             <a href="#" onclick="checkCredentials()">עמוד מנהל</a>
             <button type="button" class="btn btn-outline-info" id="logoutBtn" onclick="adminLogout()">התנתק</button>
         </div>
-      </div>
+    </div>
 
-      <div class="banner-wrapper">
+    <div class="banner-wrapper">
         <img src="assets/vercel-appbar.png" class="banner" />
     </div>
 
-      <div class="appbar">
+    <div class="appbar">
         <!-- <div class="hamburger" onclick="toggleSideNav()">
             <span></span>
             <span></span>
             <span></span>
         </div> -->
-        
-      </div>
-    
-      
+
+    </div>
+
+
 
     <div class="heli-container container input-group mb-3">
         <input id="heli_number" class="form-control" type="number" inputmode="numeric" placeholder="מספר מסוק">
     </div>
 
+    <div class="container mb-3">
+        <div class="location-toggle-wrap">
+            <div class="location-legend">מיקום</div>
+            <div class="location-options">
+                <span>רמת דוד</span>
+                <label for="location" class="location-switch">
+                    <input name="location" type="checkbox" id="location">
+                    <span class="slider round"></span>
+                </label>
+                <span>רמון</span>
+            </div>
+            
+        </div>
+    </div>
+
     <h3>טילים</h4>
-        <div class="missile-container container input-group mb-3">
-        
+        <div class="missile-container container mb-3">
+
             <button id="add_missile_btn" class="btn btn-primary boxshadow" type="button">הוסף טיל</button>
 
-            <h6>בחירת טילי פיגיון</h6>
+            <button id="toggle_gatr_missile_btn" class="btn btn-primary boxshadow" type="button">הוספת טילי
+                פיגיון</button>
+
+            <div class="gatr-container">
+                <h6>בחירת טילי פיגיון</h6>
                 <div class="outer-circle">
                     <div class="row-1 row">
                         <div class="inner-circle inner-circle-10" data-tube="11"></div>
@@ -98,51 +117,58 @@
                 <div id="gatr_inputs">
 
                 </div>
+            </div>
 
 
         </div>
 
-        <h3>מוץ/נורים</h4>
-            <div class="ew-container container input-group">
-                <button id="ew_btn" class="btn btn-primary boxshadow" type="button">הוסף מוץ/נורים</button>
+        <h3>מוץ/נורים</h3>
+        <div class="ew-container container input-group">
+            <button id="ew_btn" class="btn btn-primary boxshadow" type="button">הוסף מוץ/נורים</button>
+        </div>
+
+        <h3>פגזים</h3>
+        <div class="cartridges-container container">
+            <button id="cartridge_btn" class="btn btn-primary boxshadow" type="button">הוסף פגזים</button>
+        </div>
+
+        <h3>השלמות</h3>
+        <div class="completion-container container">
+            <button id="add_missile_completion_btn" class="btn btn-primary boxshadow" type="button">הוסף טיל</button>
+        </div>
+
+
+        <div class="notes-container">
+            <textarea class="form-control boxshadow" id="notes" placeholder="הערות"></textarea>
+        </div>
+
+        <div class="share-container">
+            <div id="whatsapp-container" class="border rounded">
+                <img id="whatsapp_share" src="assets/whatsapp-logo.png" id="whatsapp_btn" alt="whatsapp-logo" width="65"
+                    height="65">
+                <label>שיתוף ל Whatsapp</label>
             </div>
-
-            <h3>פגזים</h4>
-                <div class="cartridges-container container">
-                    <button id="cartridge_btn" class="btn btn-primary boxshadow" type="button">הוסף פגזים</button>
-                </div>
-
-                <div class="notes-container">
-                    <textarea class="form-control boxshadow" id="notes" placeholder="הערות"></textarea>
-                </div>
-
-                <div class="share-container">
-                    <div id="whatsapp-container" class="border rounded">
-                        <img id="whatsapp_share" src="assets/whatsapp-logo.png" id="whatsapp_btn" alt="whatsapp-logo"
-                            width="65" height="65">
-                        <label>שיתוף ל Whatsapp</label>
-                    </div>
-                    <div id="telegram-container" class="border rounded">
-                        <img id="telegram-share" src="assets/telegram-logo.png" id="telegram_btn" alt="telegram-logo"
-                            width="65" height="65">
-                        <label>שיתוף ל Telegram</label>
-                    </div>
-                </div>
-               
-
-                <button id="clear_btn" type="button" class="btn btn-secondary">איפוס נתונים</button>
-
-                <!-- <button id="clear_memory_btn" type="button" class="btn btn-danger">מחיקת זיכרון</button> -->
+            <div id="telegram-container" class="border rounded">
+                <img id="telegram-share" src="assets/telegram-logo.png" id="telegram_btn" alt="telegram-logo" width="65"
+                    height="65">
+                <label>שיתוף ל Telegram</label>
+            </div>
+        </div>
 
 
-                <script src="scripts/dom_elements.js"></script>
-                <script src="scripts/add_scripts.js"></script>
-                <script src="scripts/utils.js"></script>
-                <script src="scripts/localStorageHandler.js"></script>
-                <script src="scripts/constants.js"></script>
-                <script type="module" src="scripts/script.js"></script>
-                <script src="scripts/gatr.js"></script>
-                <script src="scripts/side_navbar.js"></script>
+        <button id="clear_btn" type="button" class="btn btn-secondary">איפוס נתונים</button>
+
+        <!-- <button id="clear_memory_btn" type="button" class="btn btn-danger">מחיקת זיכרון</button> -->
+
+
+        <script src="scripts/dom_elements.js"></script>
+        <script src="scripts/add_scripts.js"></script>
+        <script src="scripts/utils.js"></script>
+        <script src="scripts/localStorageHandler.js"></script>
+        <script src="scripts/constants.js"></script>
+        <script type="module" src="scripts/script.js"></script>
+        <script src="scripts/gatr.js"></script>
+        <script src="scripts/side_navbar.js"></script>
 </body>
 
 </html>

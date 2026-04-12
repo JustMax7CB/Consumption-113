@@ -5,6 +5,7 @@ const maxMissileRows = 16;
 let missileIndex = 0;
 let ewIndex = 0;
 let cartridgeIndex = 0;
+let completionIndex = 0;
 
 const removeElement = (className, index) => {
   const query = `.${className}[index="${index}"]`;
@@ -199,3 +200,42 @@ const addCartridgeRow = () => {
     addCartridgeButton.style.display = "none";
   }
 };
+
+const addCompletionRow = () => {
+  var CompletionContainer = document.querySelector(".completion-container");
+
+  const currentIndex = completionIndex++;
+  
+  var completionRow = document.createElement("div");
+  completionRow.className = "completion-row item-row";
+  completionRow.setAttribute("index", currentIndex);
+
+  var selectElement = document.createElement("select");
+  selectElement.id = `missile_completion_select_${currentIndex}`;
+  selectElement.className = "form-select missile-select";
+  for (let option of missileTypes) {
+    var optionElement = document.createElement("option");
+    optionElement.text = option;
+    optionElement.value = option;
+    selectElement.appendChild(optionElement);
+  }
+
+  var inputElement = document.createElement("input");
+  inputElement.type = "number";
+  inputElement.inputMode = "numeric";
+  inputElement.placeholder = "מסד טיל";
+  inputElement.className = "form-control missile-number data-number";
+  inputElement.id = `missile_completion_number_${currentIndex}`;
+
+  var removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.innerText = "מחק";
+  removeButton.className = "btn btn-danger  remove-btn";
+  removeButton.onclick = () => removeElement("completion-row", currentIndex);
+
+  completionRow.appendChild(selectElement);
+  completionRow.appendChild(inputElement);
+  completionRow.appendChild(removeButton);
+
+  CompletionContainer.insertBefore(completionRow, addCompletionButton);
+}

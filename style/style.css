@@ -52,6 +52,24 @@ h1 {
     color: #999;
 }
 
+.location-toggle-wrap {
+    text-align: center;
+}
+
+.location-legend {
+    font-size: 1rem;
+    margin-bottom: 0.35rem;
+}
+
+.location-toggle {
+    box-shadow: 0 1px 1px rgba(56, 56, 56, 0.2);
+    border-radius: 6px;
+}
+
+.location-toggle .location-toggle-btn {
+    min-width: 4.5rem;
+}
+
 .flight-details {
     display: flex;
     margin: 0 0 2em 0;
@@ -102,11 +120,64 @@ input::-webkit-inner-spin-button {
     justify-content: center;
     margin: 10px 0;
     flex-wrap: wrap;
+    margin: 0 !important;
 }
 
-#add_missile_btn {
+#add_missile_btn{
     width: 10em;
     margin: 10px 0;
+}
+
+#add_missile_completion_btn {
+    width: 10em;
+    margin: 10px 0;
+    background-color: rgb(37, 182, 66);
+    margin-bottom: 30px;
+}
+
+
+.gatr-container.open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gatr-container{
+    display: none;
+}
+
+#toggle_gatr_missile_btn {
+    width: 12em;
+    margin: 10px 0;
+    font-size: 16px;
+    /* Slightly cooler / softer than default .btn-primary so it reads as related but distinct */
+    background-color: #2a7bb8;
+    border-color: #256aa3;
+    color: #fff;
+}
+
+#toggle_gatr_missile_btn:hover {
+    background-color: #256aa3;
+    border-color: #1f5a8f;
+    color: #fff;
+}
+
+#toggle_gatr_missile_btn:focus {
+    box-shadow: 0 3px 4px rgba(56, 56, 56, 0.3), 0 0 0 0.2rem rgba(42, 123, 184, 0.45);
+}
+
+/* Panel open: strong contrast from primary blue and from the default toggle tint */
+#toggle_gatr_missile_btn.toggle-gatr-missile-btn--active,
+#toggle_gatr_missile_btn.toggle-gatr-missile-btn--active:hover,
+#toggle_gatr_missile_btn.toggle-gatr-missile-btn--active:focus {
+    background-color: #c2410c;
+    border-color: #9a3412;
+    color: #fff;
+}
+
+#toggle_gatr_missile_btn.toggle-gatr-missile-btn--active:focus {
+    box-shadow: 0 3px 4px rgba(56, 56, 56, 0.3), 0 0 0 0.2rem rgba(194, 65, 12, 0.45);
 }
 
 .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
@@ -253,7 +324,7 @@ textarea {
         margin: 5px 5px;
     }
 
-    #ew_btn, #cartridge_btn, #add_missile_btn {
+    #ew_btn, #cartridge_btn, #add_missile_btn, #toggle_gatr_missile_btn {
         margin: 5px 0px 15px 0px;
     }
 }

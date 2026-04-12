@@ -3,9 +3,13 @@ import { SummaryReport } from "../model/summary_report.js";
 
 addMissileButton.addEventListener("click", () => addMissileRow());
 
+toggleGatrMissileButton.addEventListener("click", () => ToggleGatrContainer());
+
 addEwButton.addEventListener("click", () => addEwRow());
 
 addCartridgeButton.addEventListener("click", () => addCartridgeRow());
+
+addCompletionButton.addEventListener("click", () => addCompletionRow());
 
 whatsappShareContainer.addEventListener("click", () =>
   saveData(sendToWhatsapp)
@@ -18,18 +22,25 @@ telegramShareContainer.addEventListener("click", () =>
 clearButton.addEventListener("click", () => clearData());
 
 
+const ToggleGatrContainer = () => {
+  gatrContainer.classList.toggle("open");
+  toggleGatrMissileButton.textContent = gatrContainer.classList.contains("open") ? "הסתר טילי פיגיון" : "הוסף טילי פיגיון";
+  toggleGatrMissileButton.classList.toggle("toggle-gatr-missile-btn--active");
+};
 
 const saveData = async (sendFunction) => {
   if (!formValidation()) return;
   const heliNumber = document.querySelector("#heli_number").value;
+  const location = locationToggle.checked ? "רמת דוד" : "רמון";
 
 
   const missiles = saveMissiles();
   const ews = saveEw();
   const cartridges = saveCartridge();
+  const completion = saveCompletion();
   const note = saveNotes();
 
-  const report = new SummaryReport(cartridges, ews, missiles);
+  const report = new SummaryReport(location, cartridges, ews, missiles, completion);
 
   const data = {
     heliNumber: heliNumber,
@@ -143,6 +154,23 @@ const saveCartridge = () => {
   return cartridgeList;
 };
 
+const saveCompletion = () => {
+  let completionList = [];
+
+  const completionRows = document.querySelectorAll(".completion-row");
+  for (let missileRow of completionRows) {
+    const missileType = missileRow.querySelector(".missile-select").value;
+    const missileNumber = missileRow.querySelector(".missile-number").value;
+
+    completionList.push({
+      type: missileType,
+      number: missileNumber,
+    });
+  }
+
+  return completionList;
+}
+
 const saveNotes = () => {
   const note = document.querySelector("textarea").value;
   if (note !== undefined && note !== null) return note;
@@ -150,42 +178,55 @@ const saveNotes = () => {
 };
 
 const createMessage = (data) => {
+  const location = data.report.location;
   const missiles = data.report.missiles;
   const ews = data.report.ews;
   const cartridges = data.report.cartridges;
   const heliNumber = data.heliNumber;
-  const note = data.note;
+  const completions = data.report.completion;
+  const note = data.note != null ? String(data.note).trim() : "";
 
+  const header = `🐝  מסוק ${heliNumber}  🐝`;
+  const locationLine = `מיקום: ${location}\n`;
 
-  const heliNumberMessagePart = `מסוק ${heliNumber}`;
-  let ewsMessagePart = ``;
-  for (let ew of ews) {
-
-    ewsMessagePart += `${ewColors[ew.type]} ${ew.type} ${ew.station} - ${ew.quantity}\n`;
+  const ewLines = [];
+  for (const ew of ews) {
+    ewLines.push(`${ewColors[ew.type]} ${ew.type} ${ew.station} - ${ew.quantity}`);
   }
 
-  let missilesMessagePart = ``;
-  let tubeMessagePart = ``;
-  for (let missile of missiles) {
-    if (missile.tube) {
-      tubeMessagePart = `צינור #${missile.tube}`;
-    }
-    missilesMessagePart += `${explosionEmoji} טיל ${missile.type} מסד ${missile.number} ${tubeMessagePart} - ${missile.result}\n`;
+  const missileLines = [];
+  for (const missile of missiles) {
+    const tubePart = missile.tube ? ` צינור #${missile.tube}` : "";
+    missileLines.push(
+      `${explosionEmoji} טיל ${missile.type} מסד ${missile.number}${tubePart} - ${missile.result}`
+    );
   }
 
-  let cartridgeMessagePart = ``;
-  for (let cartridge of cartridges) {
-    cartridgeMessagePart += `${fireEmoji} פגזים ${cartridge.type} - ${cartridge.quantity}\n`;
+  const cartridgeLines = [];
+  for (const cartridge of cartridges) {
+    cartridgeLines.push(`${fireEmoji} פגזים ${cartridge.type} - ${cartridge.quantity}`);
   }
 
-  let noteMessagePart = note !== null ? note : null;
+  let completionBlock = "";
+  if (completions.length > 0) {
+    completionBlock += "\n"
+    const completionLines = completions.map(
+      (c) => `✚ ${c.type} מסד ${c.number}`
+    );
+    completionBlock += ["השלמות", ...completionLines].join("\n");
+  }
 
-  const fullMessage = `🐝  ${heliNumberMessagePart}  🐝
-${ewsMessagePart}
-${missilesMessagePart}
-${cartridgeMessagePart}
+  const parts = [
+    header,
+    locationLine,
+    ewLines.length ? ewLines.join("\n") : "",
+    missileLines.length ? missileLines.join("\n") : "",
+    cartridgeLines.length ? cartridgeLines.join("\n") : "",
+    completionBlock,
+    note,
+  ].filter((s) => s !== "");
 
-${noteMessagePart}`;
+  const fullMessage = parts.join("\n");
   console.log("Full Message:");
   console.log(fullMessage);
 
@@ -223,6 +264,7 @@ const clearData = () => {
   for (let row of gatrMissiles) {
     row.remove();
   }
+
 };
 
 const formValidation = () => {

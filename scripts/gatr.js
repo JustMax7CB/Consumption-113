@@ -54,3 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+const clearGatrSelections = () => {
+  const innerCircles = document.querySelectorAll(".inner-circle");
+  const gatrRows = document.querySelectorAll(".gatr-row");
+  innerCircles.forEach(circle => {
+    circle.classList.remove("selected");
+  });
+  gatrRows.forEach(row => row.remove())
+}

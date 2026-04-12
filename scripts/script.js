@@ -26,6 +26,10 @@ const ToggleGatrContainer = () => {
   gatrContainer.classList.toggle("open");
   toggleGatrMissileButton.textContent = gatrContainer.classList.contains("open") ? "הסתר טילי פיגיון" : "הוסף טילי פיגיון";
   toggleGatrMissileButton.classList.toggle("toggle-gatr-missile-btn--active");
+
+  if (!gatrContainer.classList.contains("open")) {
+    clearGatrSelections();
+  }
 };
 
 const saveData = async (sendFunction) => {

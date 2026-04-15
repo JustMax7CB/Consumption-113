@@ -213,7 +213,7 @@ const addCompletionRow = () => {
   var selectElement = document.createElement("select");
   selectElement.id = `missile_completion_select_${currentIndex}`;
   selectElement.className = "form-select missile-select";
-  for (let option of missileTypes) {
+  for (let option of [...missileTypes, "טיל פיגיון"]) {
     var optionElement = document.createElement("option");
     optionElement.text = option;
     optionElement.value = option;

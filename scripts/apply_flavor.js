@@ -4,8 +4,11 @@
     const isAdmin =
       /admin\.html$/i.test(location.pathname) ||
       location.pathname.endsWith("/admin");
+    const isReportsPage = location.pathname.includes("reports.html");
 
-    document.title = isAdmin ? b.adminTitle : b.title;
+    if (!isReportsPage) {
+      document.title = isAdmin ? b.adminTitle : b.title;
+    }
 
     const apple = document.querySelector('meta[name="apple-mobile-web-app-title"]');
     if (apple) apple.setAttribute("content", b.shortName);
@@ -35,6 +38,12 @@
     window.__FLAVOR_HOME__ = `/${flavor}/`;
     const navHome = document.getElementById("nav-home");
     if (navHome) navHome.setAttribute("href", window.__FLAVOR_HOME__);
+
+    const copyEl = document.getElementById("site-copyright");
+    if (copyEl && typeof COPYRIGHT_OWNER === "string") {
+      const y = "2023 - " + new Date().getFullYear();
+      copyEl.textContent = `© ${y} ${COPYRIGHT_OWNER}. כל הזכויות שמורות.`;
+    }
   }
 
   if (document.readyState === "loading") {

@@ -33,6 +33,9 @@ const rocketEmoji = "\u{1F680}"
  */
 const SITE_FLAVOR = "113";
 
+/** Footer copyright — change to your name or legal entity */
+const COPYRIGHT_OWNER = "Max Shapira";
+
 const FLAVOR_BRANDING = {
   "113": {
     title: "צריכות 113",

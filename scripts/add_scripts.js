@@ -47,6 +47,7 @@ const addEwRow = () => {
   var typeSelectElement = document.createElement("select");
   typeSelectElement.id = `ew_type_select_${currentIndex}`;
   typeSelectElement.className = "form-select ew-type-select";
+  const { ewPoints } = getFlavorBranding();
   for (let option of ewTypes) {
     var optionElement = document.createElement("option");
     optionElement.text = option;
@@ -107,6 +108,7 @@ const addMissileRow = () => {
   var selectElement = document.createElement("select");
   selectElement.id = `missile_select_${currentIndex}`;
   selectElement.className = "form-select missile-select";
+  const { missileTypes } = getFlavorBranding();
   for (let option of missileTypes) {
     var optionElement = document.createElement("option");
     optionElement.text = option;
@@ -213,7 +215,8 @@ const addCompletionRow = () => {
   var selectElement = document.createElement("select");
   selectElement.id = `missile_completion_select_${currentIndex}`;
   selectElement.className = "form-select missile-select";
-  for (let option of [...missileTypes, "טיל פיגיון"]) {
+  const { missileTypes: completionMissileTypes } = getFlavorBranding();
+  for (let option of [...completionMissileTypes, "טיל פיגיון"]) {
     var optionElement = document.createElement("option");
     optionElement.text = option;
     optionElement.value = option;

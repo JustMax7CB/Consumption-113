@@ -25,7 +25,7 @@ const  checkCredentials = async () => {
   const adminUnlocked = localStorage.getItem(AdminAuthKey);
 
   if (adminUnlocked === "true") {
-    window.location.href = "admin.html";
+    window.location.href = "/admin.html";
     return;
   }
 
@@ -38,7 +38,7 @@ const  checkCredentials = async () => {
     if (inputHash === STORED_HASH) {
       alert("כניסה מאושרת!");
       localStorage.setItem(AdminAuthKey, "true");
-      window.location.href = "admin.html";
+      window.location.href = "/admin.html";
     } else {
       alert("סיסמה שגויה");
     }
@@ -46,10 +46,12 @@ const  checkCredentials = async () => {
 
 const adminLogout = () => {
   localStorage.setItem(AdminAuthKey, "false");
-  alert("התנתקת בהצלחה!")
-  location.reload();
-  window.location.href = "index.html";
-}
+  alert("התנתקת בהצלחה!");
+  window.location.href =
+    typeof window.__FLAVOR_HOME__ === "string" && window.__FLAVOR_HOME__.length
+      ? window.__FLAVOR_HOME__
+      : "/index.html";
+};
 
 const hashPassword = async (password) => {
   const msgBuffer = new TextEncoder().encode(password);

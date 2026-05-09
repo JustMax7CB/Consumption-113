@@ -190,12 +190,13 @@ const createMessage = (data) => {
   const completions = data.report.completion;
   const note = data.note != null ? String(data.note).trim() : "";
 
-  const header = `🐝  מסוק ${heliNumber}  🐝`;
+  const header = getFlavorBranding().shareHeader(heliNumber);
   const locationLine = `מיקום: ${location}\n`;
 
   const ewLines = [];
   for (const ew of ews) {
-    ewLines.push(`${ewColors[ew.type]} ${ew.type} ${ew.station} - ${ew.quantity}`);
+    const ewMark = ewColors[ew.type] ? `${ewColors[ew.type]} ` : "";
+    ewLines.push(`${ewMark}${ew.type} ${ew.station} - ${ew.quantity}`);
   }
 
   const missileLines = [];

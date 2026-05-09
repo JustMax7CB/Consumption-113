@@ -319,6 +319,20 @@ textarea {
     border-radius: 6px;
 }
 
+.site-footer {
+    width: 100%;
+    margin-top: 2rem;
+    padding: 1rem 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: #5c5c5c;
+}
+
+.site-copyright {
+    margin: 0;
+    line-height: 1.5;
+}
+
 @media screen and (max-width: 530px) {
     .btn-primary, .remove-btn, .form-select:not(.gatr-select), .remove-btn  {
         margin: 5px 5px;

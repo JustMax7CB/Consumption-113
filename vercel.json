@@ -1,4 +1,12 @@
 {
+  "rewrites": [
+    { "source": "/113", "destination": "/index.html" },
+    { "source": "/113/", "destination": "/index.html" },
+    { "source": "/113/index.html", "destination": "/index.html" },
+    { "source": "/190", "destination": "/index.html" },
+    { "source": "/190/", "destination": "/index.html" },
+    { "source": "/190/index.html", "destination": "/index.html" }
+  ],
   "functions": {
     "api/**/*.js": {
       "includeFiles": "lib/**/*.js"
